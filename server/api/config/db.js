@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-
 const { MONGO_DEV_URL } = process.env;
+
 exports.connect = async () => {
     mongoose
-        .connect(process.env.MONGO_DEV_URL, {
+        .connect(MONGO_DEV_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         })
