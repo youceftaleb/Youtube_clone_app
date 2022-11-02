@@ -18,6 +18,10 @@ module.exports = () => {
     router.get('/videos/trend', VideoController.trendVideos)
     // random videos
     router.get('/videos/random', VideoController.randomVideos)
+    // search query 
+    router.get('/videos/search', VideoController.search)
+    // tag query
+    router.get('/videos/tags', VideoController.getByTag)
     // get
     router.get('/videos/:id', VideoController.GetVideo)
 
