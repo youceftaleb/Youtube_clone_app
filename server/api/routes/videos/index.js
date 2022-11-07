@@ -24,6 +24,10 @@ module.exports = () => {
     router.get('/videos/tags', VideoController.getByTag)
     // get
     router.get('/videos/:id', VideoController.GetVideo)
+    // like
+    router.put('/videos/like/:videoId', verifyToken, VideoController.like)
+    // dislike
+    router.put('/videos/dislike/:videoId', verifyToken, VideoController.dislike)
 
     return router;
 }

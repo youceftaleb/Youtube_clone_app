@@ -14,9 +14,6 @@ module.exports = () => {
     router.put('/users/sub/:id', verifyToken, UserController.subUser)
     // unsub
     router.put('/users/unsub/:id', verifyToken, UserController.unsubUser)
-    // like
-    router.put('/like/:videoId', verifyToken, UserController.like)
-    // dislike
-    router.put('/dislike/:videoId', verifyToken, UserController.dislike)
+
     return router;
 }

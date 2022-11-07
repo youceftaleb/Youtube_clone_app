@@ -65,17 +65,4 @@ exports.unsubUser = async (req, res) => {
         res.status(err.status || 500).send({ message: err.message || 'Something went wrong' })
     }
 }
-exports.like = async (req, res) => {
-    try {
 
-    } catch (err) {
-        res.status(err.status || 500).send({ message: err.message || 'Something went wrong' })
-    }
-}
-exports.dislike = async (req, res) => {
-    try {
-
-    } catch (err) {
-        res.status(err.status || 500).send({ message: err.message || 'Something went wrong' })
-    }
-}

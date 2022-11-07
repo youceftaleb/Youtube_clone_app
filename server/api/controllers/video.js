@@ -137,3 +137,25 @@ exports.search = async (req, res) => {
         res.status(err.status || 500).send({ message: err.message || "Something went wrong" })
     }
 }
+exports.like = async (req, res) => {
+    try {
+        await Video.findByIdAndUpdate(req.params.videoId, {
+            $addToSet: { likes: req.user.user_id },
+            $pull: { dislikes: req.user.user_id }
+        })
+        res.status(200).send({ message: 'like added' })
+    } catch (err) {
+        res.status(err.status || 500).send({ message: err.message || 'Something went wrong' })
+    }
+}
+exports.dislike = async (req, res) => {
+    try {
+        await Video.findByIdAndUpdate(req.params.videoId, {
+            $addToSet: { dislikes: req.user.user_id },
+            $pull: { likes: req.user.user_id }
+        })
+        res.status(200).send({ message: 'dislike added' })
+    } catch (err) {
+        res.status(err.status || 500).send({ message: err.message || 'Something went wrong' })
+    }
+}
