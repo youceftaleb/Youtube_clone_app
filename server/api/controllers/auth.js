@@ -16,9 +16,9 @@ exports.register = async (req, res) => {
         if (oldUser) {
             return res.status(409).send({ message: "User ALeready exists, Please login" });
         }
-        // Ecrypt user password
+        // ! Encrypt user password
         const encryptedPassword = await bcrypt.hash(password, 10);
-        // saving our new created instance
+        // * saving our new created instance
         const savedUser = await User.create({
             email,
             password: encryptedPassword,
@@ -49,10 +49,10 @@ exports.login = async (req, res) => {
                 process.env.TOKEN_KEY
             );
 
-            const { password, ...others } = user._doc;
+            const { password, ...withoutPassword } = user._doc;
 
             // response
-            res.cookie('token', token, { httpOnly: true }).status(200).send({ message: 'logged in successfully', data: others })
+            res.cookie('token', token, { httpOnly: true }).status(200).send({ message: 'logged in successfully', data: withoutPassword })
         } else {
             res.status(409).send({ message: "incorrect email or password" });
         }
@@ -63,7 +63,7 @@ exports.login = async (req, res) => {
 
 
 
-// geetting user account
+// getting user account
 // todo later
 // exports.account = async (req, res) => {
 //     if (req.user) {

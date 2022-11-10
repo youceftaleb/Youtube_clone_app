@@ -3,6 +3,7 @@ const app = express()
 require('dotenv').config()
 const config = require('./config/db')
 const apiRoutes = require("./routes");
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
 app.use(bodyParser.json());
@@ -12,10 +13,15 @@ app.use(
     })
 );
 app.use(cookieParser())
-
+app.use(cors());
 app.use("/api", apiRoutes());
+app.use((req, res, next) => {
+    console.log("Time: ", Date.now());
+    next();
+});
 
-app.listen(8800, () => {
+
+app.listen(process.env.PORT, () => {
     config.connect()
     console.log(`App listening on port ${process.env.PORT}`)
 })

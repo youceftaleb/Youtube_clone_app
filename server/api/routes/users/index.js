@@ -1,19 +1,19 @@
 const express = require('express')
 const router = express.Router()
 const UserController = require('../../controllers/user')
-const verifyToken = require('../../middlewares/verifyToken')
+const checkLogin = require('../../middlewares/checkLogin')
 
 module.exports = () => {
     // update
-    router.put('/users/:id', verifyToken, UserController.updateUser)
+    router.put('/users/:id', checkLogin, UserController.updateUser)
     // delete
-    router.delete('/users/:id', verifyToken, UserController.deleteUser)
+    router.delete('/users/:id', checkLogin, UserController.deleteUser)
     // get
     router.get('/users/:id', UserController.getUser)
     // sub
-    router.put('/users/sub/:id', verifyToken, UserController.subUser)
+    router.put('/users/sub/:id', checkLogin, UserController.subUser)
     // unsub
-    router.put('/users/unsub/:id', verifyToken, UserController.unsubUser)
+    router.put('/users/unsub/:id', checkLogin, UserController.unsubUser)
 
     return router;
 }

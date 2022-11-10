@@ -30,7 +30,7 @@ const videoSchema = new mongoose.Schema({
         type: [String],
         default: []
     },
-    tags: {
+    category: {
         type: [String],
         // todo: add a default category
         default: ["New"]

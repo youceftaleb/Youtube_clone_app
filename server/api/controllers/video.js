@@ -102,12 +102,12 @@ exports.subsVideos = async (req, res) => {
         res.status(err.status || 500).send({ message: err.message || "Something went wrong" })
     }
 }
-exports.getByTag = async (req, res) => {
+exports.getByCategory = async (req, res) => {
     try {
-        const tags = req.query.tags.split(',');
-        const videos = await Video.find({ tags: { $in: tags } }).limit(20);
-        if (videos.length == 0 || videos === undefined) return res.status(404).send({ message: 'no videos matching the tags' })
-        res.status(200).send({ message: 'tag query successful', data: videos })
+        const cat = req.query.category.split(',');
+        const videos = await Video.find({ category: { $in: cat } }).limit(20);
+        if (videos.length == 0 || videos === undefined) return res.status(404).send({ message: 'no videos matching the specified category' })
+        res.status(200).send({ message: 'category query successful', data: videos })
     } catch (err) {
         res.status(err.status || 500).send({ message: err.message || "Something went wrong" })
     }
@@ -118,20 +118,20 @@ exports.search = async (req, res) => {
         const searchByTitle = await Video.find({
             title: { $regex: query, $options: "i" },
         }).limit(30);
-        const searchByTag = await Video.find({ tags: { $in: query } }).limit(30);
+        const searchByCat = await Video.find({ category: { $in: query } }).limit(30);
         const searchUser = await User.find({
             userName: { $regex: query, $options: "i" }
         }).limit(20);
         const searchByDesc = await Video.find({
             desc: { $regex: query, $options: "i" },
         }).limit(30);
-        if (searchByTitle.length == 0 && searchByTag.length == 0
+        if (searchByTitle.length == 0 && searchByCat.length == 0
             && searchUser.length == 0 && searchByDesc.length == 0) {
             return res.status(404).send({ message: 'videos not found' })
         }
         res.status(200).send({
             message: 'video query successful',
-            data: { 0: searchByTitle, 1: searchByTag, 2: searchUser, 3: searchByDesc }
+            data: { 0: searchByTitle, 1: searchByCat, 2: searchUser, 3: searchByDesc }
         })
     } catch (err) {
         res.status(err.status || 500).send({ message: err.message || "Something went wrong" })
