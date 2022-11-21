@@ -4,7 +4,7 @@ exports.AddVideo = async (req, res) => {
     try {
         const { title, videoUrl } = req.body;
         // ! form validation server side
-        if (!(title && videoUrl)) return res.status(400).send({ message: "all input are required" });
+        if (!(title && videoUrl)) return res.status(400).send({ message: "title and video are required" });
 
         const newVideo = new Video({ userId: req.user.user_id, ...req.body })
         const savedVideo = await newVideo.save()

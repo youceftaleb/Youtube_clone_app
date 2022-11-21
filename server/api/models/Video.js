@@ -12,7 +12,8 @@ const videoSchema = new mongoose.Schema({
         type: String
     },
     thumbnailUrl: {
-        type: String
+        type: String,
+        default: 'https://via.placeholder.com/150'
     },
     videoUrl: {
         type: String,

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 const baseUrl = "http://localhost:9001/api";
-const useFetch = (url, x = null) => {
+const useFetch = (url) => {
     const [response, setResponse] = useState(null);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -16,7 +16,7 @@ const useFetch = (url, x = null) => {
                 setError(err);
                 setLoading(false);
             });
-    }, [x]);
+    },);
 
     return { response, error, loading };
 };

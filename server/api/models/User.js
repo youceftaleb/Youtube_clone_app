@@ -14,9 +14,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    img: {
+    profilePic: {
         type: String,
-        default: 'https://via.placeholder.com/150'
+        default: 'http://dergipark.org.tr/assets/app/images/buddy_sample.png'
     },
     subNumber: {
         type: Number,
