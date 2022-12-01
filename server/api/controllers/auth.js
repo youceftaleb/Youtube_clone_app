@@ -45,7 +45,7 @@ exports.login = async (req, res) => {
         if (user && (await bcrypt.compare(password, user.password))) {
             // create a token
             const token = jwt.sign(
-                { user_id: user._id, email },
+                { user_id: user._id },
                 process.env.TOKEN_KEY
             );
 
@@ -61,6 +61,22 @@ exports.login = async (req, res) => {
     }
 };
 
+exports.googleAuth = async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.body.email });
+        if (user) {
+            const token = jwt.sign({ user_id: user._id }, process.env.TOKEN_KEY);
+            res.cookie('token', token, { httpOnly: true }).status(200).send({ message: 'logged in successfully', data: user._doc })
+        } else {
+            const newUser = new User({ ...req.body, fromGoogle: true })
+            const savedUser = await newUser.save()
+            const token = jwt.sign({ user_id: savedUser._id }, process.env.TOKEN_KEY);
+            res.cookie('token', token, { httpOnly: true }).status(200).send({ message: 'logged in successfully', data: savedUser._doc })
+        }
+    } catch (err) {
+        res.status(err.status || 500).send({ message: err.message || 'Something went wrong' });
+    }
+}
 
 
 // getting user account

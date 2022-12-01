@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
     },
     userName: {
         type: String,
@@ -25,6 +24,10 @@ const userSchema = new mongoose.Schema({
     subscriptions: {
         type: [String],
         default: []
+    },
+    fromGoogle: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true });
 

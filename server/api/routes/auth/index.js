@@ -7,8 +7,8 @@ module.exports = () => {
     router.post('/auth/register', AuthController.register)
     // * login
     router.post('/auth/login', AuthController.login)
-
-    // todo google auth
+    // * google auth
+    router.post('/auth/google', AuthController.googleAuth)
 
     return router;
 }

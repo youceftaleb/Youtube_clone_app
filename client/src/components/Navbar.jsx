@@ -1,4 +1,4 @@
-import { Button, Stack, Box, Modal, formLabelClasses } from "@mui/material";
+import { Button, Stack, Box, Modal, Avatar } from "@mui/material";
 import { Link } from "react-router-dom";
 import { SearchBar } from "./SearchBar";
 import { logo } from "../utils/constants";
@@ -9,6 +9,7 @@ import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { useSelector } from "react-redux";
+import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
 
 const style = {
   position: "absolute",
@@ -21,6 +22,15 @@ const style = {
   p: 4,
   color: "white",
 };
+
+function getRandomColor() {
+  var letters = "0123456789ABCDEF";
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -47,7 +57,24 @@ export const Navbar = () => {
         </Link>
         <SearchBar />
         {currentUser ? (
-          "user"
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              fontWeight: "500",
+              color: "white",
+            }}
+          >
+            <VideoCallOutlinedIcon sx={{ color: "white", cursor: "pointer" }} />
+            <Avatar
+              src={currentUser.profilePic}
+              sx={{ width: 56, height: 56, bgcolor: getRandomColor() }}
+            >
+              {currentUser.userName[0].toUpperCase()}
+            </Avatar>
+            {currentUser.userName}
+          </div>
         ) : (
           <Button onClick={handleOpen} sx={{ color: "white" }}>
             Login

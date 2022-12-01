@@ -9,14 +9,25 @@ import Container from "@mui/material/Container";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../helpers/validation";
+import GoogleIcon from "@mui/icons-material/Google";
+import { auth, provider } from "../firebase";
+import { signInWithPopup } from "firebase/auth";
+import { googleAuth } from "../services/auth";
+import { useDispatch } from "react-redux";
 
 export const SignUpPage = () => {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(registerSchema) });
   const onSubmit = (data) => console.log(data);
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => googleAuth(result, dispatch))
+      .catch((err) => console.log(err));
+  };
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -101,6 +112,14 @@ export const SignUpPage = () => {
             Sign Up
           </Button>
         </Box>
+        <Button
+          onClick={signInWithGoogle}
+          fullWidth
+          variant="outlined"
+          endIcon={<GoogleIcon />}
+        >
+          sign in with Google
+        </Button>
       </Box>
     </Container>
   );

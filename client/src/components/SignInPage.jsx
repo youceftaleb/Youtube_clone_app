@@ -8,8 +8,11 @@ import Container from "@mui/material/Container";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../helpers/validation";
-import { login } from "../services/auth";
+import { googleAuth, login } from "../services/auth";
 import { useDispatch } from "react-redux";
+import GoogleIcon from "@mui/icons-material/Google";
+import { auth, provider } from "../firebase";
+import { signInWithPopup } from "firebase/auth";
 
 export const SignInPage = () => {
   const dispatch = useDispatch();
@@ -21,6 +24,12 @@ export const SignInPage = () => {
   const onSubmit = (data) => {
     const { email, password } = data;
     login({ email, password }, dispatch);
+  };
+
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => googleAuth(result, dispatch))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -84,6 +93,14 @@ export const SignInPage = () => {
             Sign In
           </Button>
         </form>
+        <Button
+          onClick={signInWithGoogle}
+          fullWidth
+          variant="outlined"
+          endIcon={<GoogleIcon />}
+        >
+          sign in with Google
+        </Button>
       </Box>
     </Container>
   );

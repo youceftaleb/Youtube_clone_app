@@ -11,15 +11,33 @@ export const login = ({ email, password }, dispatch) => {
                 const data = res.data.data;
                 // sessionStorage.setItem("token", JSON.stringify(data));
                 dispatch(loginSuccess(data));
-                successNotification(res.data.message)
-                    ;
+                successNotification(res.data?.message);
                 // setTimeout(() => {
                 //     window.location = "/hello";
                 // }, 2000);
             }
         })
         .catch((err) => {
-            errorNotification(err.response.data.message);
+            errorNotification(err.response.data?.message);
             dispatch(loginError())
         });
 };
+
+export const googleAuth = (result, dispatch) => {
+    dispatch(loginStart())
+    httpCommon.post('/auth/google', {
+        userName: result.user.displayName,
+        email: result.user.email,
+        ProfilePic: result.user.photoURL,
+    }).then((res) => {
+        if (res.status === 200) {
+            const data = res.data.data;
+            // sessionStorage.setItem("token", JSON.stringify(data));
+            dispatch(loginSuccess(data));
+            successNotification(res.data?.message)
+        }
+    }).catch((err) => {
+        errorNotification(err.response.data?.message);
+        dispatch(loginError())
+    });
+}

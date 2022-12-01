@@ -114,7 +114,7 @@ exports.getByCategory = async (req, res) => {
 }
 exports.search = async (req, res) => {
     try {
-        const query = req.query.q
+        const query = String(req.query.q)
         const searchByTitle = await Video.find({
             title: { $regex: query, $options: "i" },
         }).limit(30);
@@ -155,6 +155,16 @@ exports.dislike = async (req, res) => {
             $pull: { likes: req.user.user_id }
         })
         res.status(200).send({ message: 'dislike added' })
+    } catch (err) {
+        res.status(err.status || 500).send({ message: err.message || 'Something went wrong' })
+    }
+}
+
+exports.getVideosOfChannel = async (req, res) => {
+    try {
+        const videos = await Video.find({ userId: req.params.id });
+        if (!videos) return res.status(404).send({ message: "user or videos doesn't exist" })
+        res.status(200).send({ message: 'user videos found', data: videos })
     } catch (err) {
         res.status(err.status || 500).send({ message: err.message || 'Something went wrong' })
     }

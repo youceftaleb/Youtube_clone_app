@@ -28,6 +28,8 @@ module.exports = () => {
     router.put('/videos/like/:videoId', checkLogin, VideoController.like)
     // dislike
     router.put('/videos/dislike/:videoId', checkLogin, VideoController.dislike)
+    // get all videos of a user
+    router.get('/videos/user/:id', VideoController.getVideosOfChannel)
 
     return router;
 }
