@@ -12,9 +12,6 @@ export const login = ({ email, password }, dispatch) => {
                 // sessionStorage.setItem("token", JSON.stringify(data));
                 dispatch(loginSuccess(data));
                 successNotification(res.data?.message);
-                // setTimeout(() => {
-                //     window.location = "/hello";
-                // }, 2000);
             }
         })
         .catch((err) => {
@@ -28,7 +25,7 @@ export const googleAuth = (result, dispatch) => {
     httpCommon.post('/auth/google', {
         userName: result.user.displayName,
         email: result.user.email,
-        ProfilePic: result.user.photoURL,
+        profilePic: result.user.photoURL,
     }).then((res) => {
         if (res.status === 200) {
             const data = res.data.data;

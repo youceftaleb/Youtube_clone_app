@@ -69,10 +69,9 @@ export const Navbar = () => {
             <VideoCallOutlinedIcon sx={{ color: "white", cursor: "pointer" }} />
             <Avatar
               src={currentUser.profilePic}
-              sx={{ width: 56, height: 56, bgcolor: getRandomColor() }}
-            >
-              {currentUser.userName[0].toUpperCase()}
-            </Avatar>
+              alt={currentUser.userName}
+              sx={{ width: 45, height: 45, bgcolor: getRandomColor() }}
+            />
             {currentUser.userName}
           </div>
         ) : (

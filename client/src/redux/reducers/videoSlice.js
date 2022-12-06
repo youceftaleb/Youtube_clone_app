@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const videoSlice = createSlice({
     name: 'video',
     initialState: {
-        currenVideo: null,
+        currentVideo: null,
         loading: false,
         error: false
     },
@@ -13,7 +13,7 @@ export const videoSlice = createSlice({
             state.error = false;
         },
         fetchSuccess: (state, { payload }) => {
-            state.currentUser = payload;
+            state.currentVideo = payload;
             state.loading = false;
             state.error = false;
         },

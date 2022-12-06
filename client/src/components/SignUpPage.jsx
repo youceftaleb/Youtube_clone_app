@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../helpers/validation";
 import GoogleIcon from "@mui/icons-material/Google";
-import { auth, provider } from "../firebase";
+import { auth, provider } from "../services/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { googleAuth } from "../services/auth";
 import { useDispatch } from "react-redux";

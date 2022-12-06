@@ -11,7 +11,7 @@ import { loginSchema } from "../helpers/validation";
 import { googleAuth, login } from "../services/auth";
 import { useDispatch } from "react-redux";
 import GoogleIcon from "@mui/icons-material/Google";
-import { auth, provider } from "../firebase";
+import { auth, provider } from "../services/firebase";
 import { signInWithPopup } from "firebase/auth";
 
 export const SignInPage = () => {

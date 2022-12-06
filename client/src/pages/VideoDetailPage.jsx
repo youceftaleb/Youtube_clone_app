@@ -1,19 +1,24 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import ReactPlayer from "react-player";
-import { Typography, Box, Stack } from "@mui/material";
+import { Typography, Box, Stack, Divider, Button } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
 import { Videos } from "../components/Videos";
-
+import { format } from "timeago.js";
 import { useDispatch, useSelector } from "react-redux";
 import httpCommon from "../utils/http-common";
+import { fetchSuccess } from "../redux/reducers/videoSlice";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
+import ReplyIcon from "@mui/icons-material/Reply";
 
 const VideoDetailPage = () => {
   const { currentUser } = useSelector((state) => state.user);
   const { currentVideo } = useSelector((state) => state.video);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { id } = useParams();
-  const [video, setVideo] = useState(null);
   const [videos, setVideos] = useState(null);
   const [channel, setChannel] = useState(null);
   useEffect(() => {
@@ -26,18 +31,14 @@ const VideoDetailPage = () => {
             setChannel(res.data.data);
           })
           .catch((err) => console.log(err));
-        setVideo(res.data.data);
-        // dispatch(fetchSuccess(res.data.data));
+        dispatch(fetchSuccess(res.data.data));
       })
       .catch((err) => console.log(err));
     httpCommon
       .get("/videos/random")
       .then((res) => setVideos(res.data.data))
       .catch((err) => console.log(err));
-  }, [id]);
-  //dispatch
-  console.log(videos);
-  console.log(channel);
+  }, [id, dispatch]);
 
   return (
     <Box minHeight="95vh">
@@ -50,7 +51,7 @@ const VideoDetailPage = () => {
               controls
             />
             <Typography color="#fff" variant="h5" fontWeight="bold" p={2}>
-              {video?.title}
+              {currentVideo?.title}
             </Typography>
             <Stack
               direction="row"
@@ -59,7 +60,41 @@ const VideoDetailPage = () => {
               py={1}
               px={2}
             >
-              <Link to={`/channel/${video?.userId}`}>
+              <Typography variant="body1" sx={{ opacity: 0.7 }}>
+                {parseInt(currentVideo?.views).toLocaleString()} views •{" "}
+                {format(currentVideo?.createdAt)}
+              </Typography>
+              <Stack direction="row" gap="20px">
+                <Typography variant="body1">
+                  {currentVideo?.likes?.includes(currentUser?._id) ? (
+                    <ThumbUpIcon sx={{ cursor: "pointer" }} />
+                  ) : (
+                    <ThumbUpOutlinedIcon sx={{ cursor: "pointer" }} />
+                  )}{" "}
+                  {currentVideo?.likes?.length}
+                </Typography>
+                <Typography variant="body1">
+                  {currentVideo?.dislikes?.includes(currentUser?._id) ? (
+                    <ThumbDownIcon sx={{ cursor: "pointer" }} />
+                  ) : (
+                    <ThumbDownOutlinedIcon sx={{ cursor: "pointer" }} />
+                  )}{" "}
+                  {currentVideo?.dislikes?.length}
+                </Typography>
+                <Typography variant="body1">
+                  <ReplyIcon sx={{ cursor: "pointer" }} /> Share
+                </Typography>
+              </Stack>
+            </Stack>
+            <Divider variant="middle" sx={{ bgcolor: "#757575" }} />
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              sx={{ color: "#fff" }}
+              py={1}
+              px={2}
+            >
+              <Link to={`/channel/${currentVideo?.userId}`}>
                 <Typography
                   variant={{ sm: "subtitle1", md: "h6" }}
                   color="#fff"
@@ -69,15 +104,23 @@ const VideoDetailPage = () => {
                     sx={{ fontSize: "12px", color: "grey", ml: "5px" }}
                   />
                 </Typography>
+                <br />
+                <Typography
+                  variant={{ sm: "subtitle2", md: "body2" }}
+                  color="#fff"
+                >
+                  {channel?.subNumber} Subscribers
+                </Typography>
               </Link>
-              <Stack direction="row" gap="20px" alignItems="center">
-                <Typography variant="body1" sx={{ opacity: 0.7 }}>
-                  {parseInt(video?.views).toLocaleString()} views
-                </Typography>
-                <Typography variant="body1" sx={{ opacity: 0.7 }}>
-                  {video?.likes.length} likes
-                </Typography>
-              </Stack>
+              <Button variant="contained" color="error" sx={{ px: "auto" }}>
+                subscribe
+              </Button>
+            </Stack>
+            <Divider variant="middle" sx={{ bgcolor: "#757575" }} />
+            <Stack py={1} px={2}>
+              <Typography variant="body1" sx={{ opacity: 0.7, color: "#fff" }}>
+                {currentVideo?.desc}
+              </Typography>
             </Stack>
           </Box>
         </Box>
