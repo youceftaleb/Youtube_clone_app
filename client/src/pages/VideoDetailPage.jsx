@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import ReactPlayer from "react-player";
-import { Typography, Box, Stack, Divider, Button } from "@mui/material";
+import { Typography, Box, Stack, Divider, Button, Avatar } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
 import { Videos } from "../components/Videos";
 import { format } from "timeago.js";
@@ -13,6 +13,7 @@ import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import ReplyIcon from "@mui/icons-material/Reply";
+import { AVATAR } from "../components";
 
 const VideoDetailPage = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -95,22 +96,23 @@ const VideoDetailPage = () => {
               px={2}
             >
               <Link to={`/channel/${currentVideo?.userId}`}>
-                <Typography
-                  variant={{ sm: "subtitle1", md: "h6" }}
-                  color="#fff"
-                >
-                  {channel?.userName}
-                  <CheckCircle
-                    sx={{ fontSize: "12px", color: "grey", ml: "5px" }}
-                  />
-                </Typography>
-                <br />
-                <Typography
-                  variant={{ sm: "subtitle2", md: "body2" }}
-                  color="#fff"
-                >
-                  {channel?.subNumber} Subscribers
-                </Typography>
+                <Stack direction="row">
+                  <AVATAR user={channel} />
+                  <Box px={1}>
+                    <Typography sx={{ sm: "subtitle1", md: "h6" }} color="#fff">
+                      {channel?.userName}
+                      <CheckCircle
+                        sx={{ fontSize: "12px", color: "grey", ml: "5px" }}
+                      />
+                    </Typography>
+                    <Typography
+                      sx={{ sm: "subtitle2", md: "body2" }}
+                      color="#fff"
+                    >
+                      {channel?.subNumber} Subscribers
+                    </Typography>
+                  </Box>
+                </Stack>
               </Link>
               <Button variant="contained" color="error" sx={{ px: "auto" }}>
                 subscribe
