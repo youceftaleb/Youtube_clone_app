@@ -2,13 +2,6 @@ import { Link } from "react-router-dom";
 import { Typography, Card, CardContent, CardMedia } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
 import propTypes from "prop-types";
-import {
-  demoThumbnailUrl,
-  demoVideoUrl,
-  demoVideoTitle,
-  demoChannelUrl,
-  demoChannelTitle,
-} from "../utils/constants";
 import { format } from "timeago.js";
 import { useEffect } from "react";
 import http from "../utils/http-common";
@@ -29,26 +22,26 @@ export const VideoCard = ({ video }) => {
         borderRadius: 0,
       }}
     >
-      <Link to={video._id ? `/video/${video._id}` : demoVideoUrl}>
+      <Link to={`/video/${video._id}`}>
         <CardMedia
-          image={video?.thumbnailUrl || demoThumbnailUrl}
+          image={video?.thumbnailUrl}
           alt={video?.title}
           sx={{ width: { xs: "100%", sm: "358px", md: "320px" }, height: 180 }}
         />
       </Link>
       <CardContent sx={{ backgroundColor: "#1e1e1e", height: "106px" }}>
-        <Link to={video._id ? `/video/${video._id}` : demoVideoUrl}>
+        <Link to={`/video/${video._id}`}>
           <Typography variant="subtitle1" fontWeight="bold" color="#fff">
-            {video?.title.slice(0, 60) || demoVideoTitle.slice(0, 60)}
+            {video?.title.slice(0, 60)}
           </Typography>
           <Typography sx={{ fontSize: 12, opacity: 0.7 }} color="#fff">
             {video?.views} views • {format(video?.createdAt)}
           </Typography>
         </Link>
         {/* // !channel card */}
-        <Link to={video?.userId ? `/channel/${channel._id}` : demoChannelUrl}>
+        <Link to={`/channel/${channel._id}`}>
           <Typography variant="subtitle2" fontWeight="bold" color="gray">
-            {channel?.userName || demoChannelTitle}
+            {channel?.userName}
             <CheckCircle sx={{ fontSize: 12, color: "gray", ml: "5px" }} />
           </Typography>
         </Link>

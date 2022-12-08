@@ -19,3 +19,5 @@ export const warningNotification = (msg) => toast.warning(msg, opts);
 export const infoNotification = (msg) => toast.info(msg, opts);
 
 export const darkNotification = (msg) => toast.dark(msg, opts);
+
+export const lightNotification = (msg) => toast(msg, { ...opts, hideProgressBar: true });

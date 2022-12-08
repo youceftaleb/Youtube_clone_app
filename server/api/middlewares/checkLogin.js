@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const verifyToken = (req, res, next) => {
-    const token = req.cookies.token;
-    if (!token) return res.status(403).send({ message: "You are not logged in" });
+    const token = req.headers.token;
+    if (!token || token === 'null') return res.status(403).send({ message: "You are not logged in" });
     try {
         const decoded = jwt.verify(token, process.env.TOKEN_KEY);
         req.user = decoded;

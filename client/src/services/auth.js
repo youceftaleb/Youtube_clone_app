@@ -8,14 +8,13 @@ export const login = ({ email, password }, dispatch) => {
         .post("/auth/login", { email, password })
         .then((res) => {
             if (res.status === 200) {
-                const data = res.data.data;
-                // sessionStorage.setItem("token", JSON.stringify(data));
-                dispatch(loginSuccess(data));
-                successNotification(res.data?.message);
+                localStorage.setItem('token', res.data.token);
+                dispatch(loginSuccess(res.data.data));
+                successNotification(res.data.message);
             }
         })
         .catch((err) => {
-            errorNotification(err.response.data?.message);
+            errorNotification(err.response.data.message);
             dispatch(loginError())
         });
 };
@@ -28,13 +27,12 @@ export const googleAuth = (result, dispatch) => {
         profilePic: result.user.photoURL,
     }).then((res) => {
         if (res.status === 200) {
-            const data = res.data.data;
-            // sessionStorage.setItem("token", JSON.stringify(data));
-            dispatch(loginSuccess(data));
-            successNotification(res.data?.message)
+            localStorage.setItem('token', res.data.token);
+            dispatch(loginSuccess(res.data.data));
+            successNotification(res.data.message)
         }
     }).catch((err) => {
-        errorNotification(err.response.data?.message);
+        errorNotification(err.response.data.message);
         dispatch(loginError())
     });
 }

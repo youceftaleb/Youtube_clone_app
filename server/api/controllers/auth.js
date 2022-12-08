@@ -33,15 +33,14 @@ exports.register = async (req, res) => {
 /// login a user
 exports.login = async (req, res) => {
     try {
-        // our login logic starts here
-        // !(just in case) console.log(req.body);
         const { email, password } = req.body;
         // validate user input
         if (!(email && password)) {
             return res.status(400).send({ message: "All input are required" });
         }
-        // validate if user exists in our database
+        // check if user exists in our database
         const user = await User.findOne({ email });
+        if (user?.fromGoogle) return res.status(409).send({ message: "you are signed up with a gmail account please sign in with google" })
         if (user && (await bcrypt.compare(password, user.password))) {
             // create a token
             const token = jwt.sign(
@@ -49,10 +48,10 @@ exports.login = async (req, res) => {
                 process.env.TOKEN_KEY
             );
 
-            const { password, ...withoutPassword } = user._doc;
+            const { password, ...userWithoutPassword } = user._doc;
 
             // response
-            res.cookie('token', token, { httpOnly: true }).status(200).send({ message: 'logged in successfully', data: withoutPassword })
+            res.status(200).send({ message: 'logged in successfully', data: userWithoutPassword, token })
         } else {
             res.status(409).send({ message: "incorrect email or password" });
         }
@@ -66,12 +65,12 @@ exports.googleAuth = async (req, res) => {
         const user = await User.findOne({ email: req.body.email });
         if (user) {
             const token = jwt.sign({ user_id: user._id }, process.env.TOKEN_KEY);
-            res.cookie('token', token, { httpOnly: true }).status(200).send({ message: 'logged in successfully', data: user._doc })
+            res.status(200).send({ message: 'logged in successfully', data: user._doc, token })
         } else {
             const newUser = new User({ ...req.body, fromGoogle: true })
             const savedUser = await newUser.save()
             const token = jwt.sign({ user_id: savedUser._id }, process.env.TOKEN_KEY);
-            res.cookie('token', token, { httpOnly: true }).status(200).send({ message: 'logged in successfully', data: savedUser._doc })
+            res.status(200).send({ message: 'logged in successfully', data: savedUser._doc, token })
         }
     } catch (err) {
         res.status(err.status || 500).send({ message: err.message || 'Something went wrong' });

@@ -10,10 +10,10 @@ export const Videos = ({ videos, direction }) => {
       justifyContent="start"
       gap={2}
     >
-      {videos.map((video, index) => (
+      {videos.map((item, index) => (
         <Box key={index}>
-          {video.title && <VideoCard video={video} />}
-          {video.email && <ChannelCard ChannelDetail={video} />}
+          {item.title && <VideoCard video={item} />}
+          {item.email && <ChannelCard ChannelDetail={item} />}
         </Box>
       ))}
     </Stack>

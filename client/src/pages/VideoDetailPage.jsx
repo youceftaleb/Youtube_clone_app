@@ -1,19 +1,23 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import ReactPlayer from "react-player";
-import { Typography, Box, Stack, Divider, Button, Avatar } from "@mui/material";
+import { Typography, Box, Stack, Divider, Button } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
 import { Videos } from "../components/Videos";
 import { format } from "timeago.js";
 import { useDispatch, useSelector } from "react-redux";
 import httpCommon from "../utils/http-common";
-import { fetchSuccess } from "../redux/reducers/videoSlice";
+import { fetchSuccess, Like, Dislike } from "../redux/reducers/videoSlice";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import ReplyIcon from "@mui/icons-material/Reply";
 import { AVATAR } from "../components";
+import { dislike, like, sub, unsub } from "../services/like.sub";
+import { subscribe } from "../redux/reducers/userSlice";
+import { Comments } from "../components";
+import { errorNotification } from "../helpers/notifications";
 
 const VideoDetailPage = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -40,6 +44,33 @@ const VideoDetailPage = () => {
       .then((res) => setVideos(res.data.data))
       .catch((err) => console.log(err));
   }, [id, dispatch]);
+
+  const handleLike = () => {
+    if (currentUser) {
+      like(currentVideo._id);
+      dispatch(Like(currentUser._id));
+    } else {
+      errorNotification("please login to perform this action");
+    }
+  };
+  const handleDislike = () => {
+    if (currentUser) {
+      dislike(currentVideo._id);
+      dispatch(Dislike(currentUser._id));
+    } else {
+      errorNotification("please login to perform this action");
+    }
+  };
+  const handleSubscribe = () => {
+    if (currentUser) {
+      currentUser.subscriptions?.includes(channel._id)
+        ? (unsub(channel._id), (channel.subNumber -= 1))
+        : (sub(channel._id), (channel.subNumber += 1));
+      dispatch(subscribe(channel?._id));
+    } else {
+      errorNotification("please login to perform this action");
+    }
+  };
 
   return (
     <Box minHeight="95vh">
@@ -68,17 +99,29 @@ const VideoDetailPage = () => {
               <Stack direction="row" gap="20px">
                 <Typography variant="body1">
                   {currentVideo?.likes?.includes(currentUser?._id) ? (
-                    <ThumbUpIcon sx={{ cursor: "pointer" }} />
+                    <ThumbUpIcon
+                      sx={{ cursor: "pointer" }}
+                      onClick={handleLike}
+                    />
                   ) : (
-                    <ThumbUpOutlinedIcon sx={{ cursor: "pointer" }} />
+                    <ThumbUpOutlinedIcon
+                      sx={{ cursor: "pointer" }}
+                      onClick={handleLike}
+                    />
                   )}{" "}
                   {currentVideo?.likes?.length}
                 </Typography>
                 <Typography variant="body1">
                   {currentVideo?.dislikes?.includes(currentUser?._id) ? (
-                    <ThumbDownIcon sx={{ cursor: "pointer" }} />
+                    <ThumbDownIcon
+                      sx={{ cursor: "pointer" }}
+                      onClick={handleDislike}
+                    />
                   ) : (
-                    <ThumbDownOutlinedIcon sx={{ cursor: "pointer" }} />
+                    <ThumbDownOutlinedIcon
+                      sx={{ cursor: "pointer" }}
+                      onClick={handleDislike}
+                    />
                   )}{" "}
                   {currentVideo?.dislikes?.length}
                 </Typography>
@@ -114,9 +157,22 @@ const VideoDetailPage = () => {
                   </Box>
                 </Stack>
               </Link>
-              <Button variant="contained" color="error" sx={{ px: "auto" }}>
-                subscribe
-              </Button>
+              {currentUser?._id === channel?._id ? null : (
+                <Button
+                  onClick={handleSubscribe}
+                  variant={
+                    currentUser?.subscriptions?.includes(channel?._id)
+                      ? "outlined"
+                      : "contained"
+                  }
+                  color="error"
+                  sx={{ px: "auto" }}
+                >
+                  {currentUser?.subscriptions?.includes(channel?._id)
+                    ? "Subscribed"
+                    : "Subscribe"}
+                </Button>
+              )}
             </Stack>
             <Divider variant="middle" sx={{ bgcolor: "#757575" }} />
             <Stack py={1} px={2}>
@@ -124,6 +180,7 @@ const VideoDetailPage = () => {
                 {currentVideo?.desc}
               </Typography>
             </Stack>
+            <Comments />
           </Box>
         </Box>
         <Box
