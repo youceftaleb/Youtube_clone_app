@@ -1,4 +1,4 @@
-import { Button, Stack, Box, Modal } from "@mui/material";
+import { Button, Stack, Box, Modal, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { SearchBar } from "./SearchBar";
 import { logo } from "../utils/constants";
@@ -60,7 +60,7 @@ export const Navbar = () => {
           >
             <VideoCallOutlinedIcon sx={{ color: "white", cursor: "pointer" }} />
             <AVATAR user={currentUser} />
-            {currentUser?.userName}
+            <Typography>{currentUser?.userName}</Typography>
           </div>
         ) : (
           <Button onClick={handleOpen} sx={{ color: "white" }}>
