@@ -30,6 +30,10 @@ module.exports = () => {
     router.put('/videos/dislike/:videoId', checkLogin, VideoController.dislike)
     // get all videos of a user
     router.get('/videos/user/:id', VideoController.getVideosOfChannel)
+    // remove a like
+    router.put('/videos/rlike/:videoId', checkLogin, VideoController.removeLike)
+    // remove a dislike
+    router.put('/videos/rdislike/:videoId', checkLogin, VideoController.removeDislike)
 
     return router;
 }

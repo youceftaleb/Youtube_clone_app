@@ -143,7 +143,7 @@ exports.like = async (req, res) => {
             $addToSet: { likes: req.user.user_id },
             $pull: { dislikes: req.user.user_id }
         })
-        res.status(200).send({ message: 'like added' })
+        res.status(200).send({ message: 'liked successfully' })
     } catch (err) {
         res.status(err.status || 500).send({ message: err.message || 'Something went wrong' })
     }
@@ -154,7 +154,27 @@ exports.dislike = async (req, res) => {
             $addToSet: { dislikes: req.user.user_id },
             $pull: { likes: req.user.user_id }
         })
-        res.status(200).send({ message: 'dislike added' })
+        res.status(200).send({ message: 'disliked successfully' })
+    } catch (err) {
+        res.status(err.status || 500).send({ message: err.message || 'Something went wrong' })
+    }
+}
+exports.removeLike = async (req, res) => {
+    try {
+        await Video.findByIdAndUpdate(req.params.videoId, {
+            $pull: { likes: req.user.user_id }
+        })
+        res.status(200).send({ message: 'like removed' })
+    } catch (err) {
+        res.status(err.status || 500).send({ message: err.message || 'Something went wrong' })
+    }
+}
+exports.removeDislike = async (req, res) => {
+    try {
+        await Video.findByIdAndUpdate(req.params.videoId, {
+            $pull: { dislikes: req.user.user_id }
+        })
+        res.status(200).send({ message: 'dislike removed' })
     } catch (err) {
         res.status(err.status || 500).send({ message: err.message || 'Something went wrong' })
     }

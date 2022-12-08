@@ -28,6 +28,8 @@ export const videoSlice = createSlice({
                 if (index !== -1) {
                     state.currentVideo.dislikes.splice(index, 1);
                 }
+            } else {
+                state.currentVideo.likes.splice(state.currentVideo.likes.findIndex(userId => userId === payload), 1);
             }
         },
         Dislike: (state, { payload }) => {
@@ -37,6 +39,8 @@ export const videoSlice = createSlice({
                 if (index !== -1) {
                     state.currentVideo.likes.splice(index, 1);
                 }
+            } else {
+                state.currentVideo.dislikes.splice(state.currentVideo.dislikes.findIndex(userId => userId === payload), 1);
             }
         }
     }

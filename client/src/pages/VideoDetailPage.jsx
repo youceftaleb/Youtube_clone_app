@@ -14,7 +14,14 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import ReplyIcon from "@mui/icons-material/Reply";
 import { AVATAR } from "../components";
-import { dislike, like, sub, unsub } from "../services/like.sub";
+import {
+  like,
+  dislike,
+  removeLike,
+  removeDislike,
+  sub,
+  unsub,
+} from "../services/like.sub";
 import { subscribe } from "../redux/reducers/userSlice";
 import { Comments } from "../components";
 import { errorNotification } from "../helpers/notifications";
@@ -47,7 +54,9 @@ const VideoDetailPage = () => {
 
   const handleLike = () => {
     if (currentUser) {
-      like(currentVideo._id);
+      currentVideo.likes.includes(currentUser._id)
+        ? removeLike(currentVideo._id)
+        : like(currentVideo._id);
       dispatch(Like(currentUser._id));
     } else {
       errorNotification("please login to perform this action");
@@ -55,7 +64,9 @@ const VideoDetailPage = () => {
   };
   const handleDislike = () => {
     if (currentUser) {
-      dislike(currentVideo._id);
+      currentVideo.dislikes.includes(currentUser._id)
+        ? removeDislike(currentVideo._id)
+        : dislike(currentVideo._id);
       dispatch(Dislike(currentUser._id));
     } else {
       errorNotification("please login to perform this action");
