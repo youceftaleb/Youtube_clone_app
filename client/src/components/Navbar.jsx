@@ -40,6 +40,7 @@ export const Navbar = () => {
   return (
     <>
       <Stack
+        zIndex={10}
         direction="row"
         alignItems="center"
         p={2}
@@ -75,7 +76,7 @@ export const Navbar = () => {
               }}
             >
               <LogoutOutlined
-                x={{ p: "10px", color: "white", cursor: "pointer" }}
+                sx={{ p: "10px", color: "white", cursor: "pointer" }}
               />
               logout
             </Button>

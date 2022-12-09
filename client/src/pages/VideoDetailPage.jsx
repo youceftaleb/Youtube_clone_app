@@ -82,7 +82,7 @@ const VideoDetailPage = () => {
       errorNotification("please login to perform this action");
     }
   };
-
+console.log(currentUser)
   return (
     <Box minHeight="95vh">
       <Stack direction={{ xs: "column", md: "row" }}>

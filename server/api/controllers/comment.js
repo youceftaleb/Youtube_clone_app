@@ -43,3 +43,17 @@ exports.getComments = async (req, res) => {
         res.status(err.status || 500).send(err.message || "Something went wrong")
     }
 }
+exports.editComment = async (req, res) => {
+    try {
+        const comment = await Comment.findById(req.params.id);
+        if (!comment) return res.status(404).send({ message: 'comment not found' });
+        if (comment.userId === req.user.user_id) {
+            const modifiedComment = await Comment.findByIdAndUpdate(req.params.id, { text: req.body.text }, { new: true, useFindAndModify: false, });
+            res.status(200).send({ message: "comment edited successfully", data: modifiedComment });
+        } else {
+            return res.status(403).send({ message: 'you are not allowed to edit this comment' })
+        }
+    } catch (err) {
+        res.status(err.status || 500).send(err.message || "Something went wrong")
+    }
+}

@@ -10,6 +10,8 @@ module.exports = () => {
     router.delete('/comments/:id', checkLogin, CommentController.deleteComment)
     // get all comments of a video
     router.get('/comments/:videoId', CommentController.getComments)
+    // modify a comment
+    router.put('/comments/:id', checkLogin, CommentController.editComment)
 
     return router;
 }

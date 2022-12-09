@@ -1,32 +1,62 @@
 import { Stack, TextField, Typography } from "@mui/material";
 import { AVATAR, Comment } from "./";
 import { Fragment, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import httpCommon from "../utils/http-common";
+import {
+  errorNotification,
+  successNotification,
+} from "../helpers/notifications";
+import {
+  addComment,
+  deleteComments,
+  fetchComments,
+} from "../redux/reducers/videoSlice";
 
 export const Comments = ({ videoId }) => {
+  const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
-  const [comments, setComments] = useState([]);
+  const { comments } = useSelector((state) => state.video);
+  const [value, setValue] = useState("");
   useEffect(() => {
-    httpCommon.get(`/comments/${videoId}`).then((res) => {
-      if (res.status === 200) {
-        setComments(res.data.data);
-      }
-    });
+    httpCommon
+      .get(`/comments/${videoId}`)
+      .then((res) => dispatch(fetchComments(res.data.data)))
+      .catch((err) => dispatch(deleteComments()));
   }, [videoId]);
+  const handlesubmit = (e) => {
+    e.preventDefault();
+    if (!value) return errorNotification("comment is empty");
+    httpCommon
+      .post(`/comments/${videoId}`, { text: value })
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch(addComment(res.data.data));
+          successNotification(res.data.message);
+        }
+      })
+      .catch((err) => errorNotification(err.response.data.message));
+    setValue("");
+  };
   return (
     <Stack sx={{ color: "#fff" }} py={5} px={5} gap={5}>
       <Typography>{comments?.length} Comments</Typography>
-      <Stack direction="row" gap={2}>
-        <AVATAR user={currentUser} />
-        <TextField
-          fullWidth
-          placeholder="Add a comment..."
-          sx={{ input: { color: "white" } }}
-          variant="standard"
-        />
-      </Stack>
+      {currentUser ? (
+        <Stack direction="row" gap={2}>
+          <AVATAR user={currentUser} />
+          <form onSubmit={handlesubmit} style={{ width: "100%" }}>
+            <TextField
+              fullWidth
+              placeholder="Add a comment..."
+              sx={{ input: { color: "white" } }}
+              variant="standard"
+              onChange={(e) => setValue(e.target.value)}
+              value={value}
+            />
+          </form>
+        </Stack>
+      ) : null}
       {comments?.map((comment, index) => (
         <Fragment key={index}>
           <Comment comment={comment} />
