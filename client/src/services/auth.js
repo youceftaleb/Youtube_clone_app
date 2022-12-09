@@ -1,5 +1,5 @@
 import httpCommon from "../utils/http-common";
-import { successNotification, errorNotification } from '../helpers/notifications'
+import { successNotification, errorNotification, infoNotification, darkNotification} from '../helpers/notifications'
 import { loginStart, loginSuccess, loginError } from "../redux/reducers/userSlice";
 
 export const login = ({ email, password }, dispatch) => {
@@ -18,6 +18,21 @@ export const login = ({ email, password }, dispatch) => {
             dispatch(loginError())
         });
 };
+
+export const signUp = ({ userName, email, password }) => {
+    httpCommon.post('/auth/register', { email, password, userName })
+        .then(res => {
+            if (res.status === 201) {
+                successNotification(res.data.message);
+            }
+        }).catch(err => {
+            if (err.response.status === 409) {
+                infoNotification(err.response.data.message)
+            } else {
+                errorNotification(err.response.data.message)
+            }
+        })
+}
 
 export const googleAuth = (result, dispatch) => {
     dispatch(loginStart())
