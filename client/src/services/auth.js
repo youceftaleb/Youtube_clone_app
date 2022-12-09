@@ -1,8 +1,8 @@
 import httpCommon from "../utils/http-common";
-import { successNotification, errorNotification, infoNotification, darkNotification} from '../helpers/notifications'
+import { successNotification, errorNotification, infoNotification, darkNotification } from '../helpers/notifications'
 import { loginStart, loginSuccess, loginError } from "../redux/reducers/userSlice";
 
-export const login = ({ email, password }, dispatch) => {
+export const login = ({ email, password }, dispatch, pathname) => {
     dispatch(loginStart())
     httpCommon
         .post("/auth/login", { email, password })
@@ -11,6 +11,9 @@ export const login = ({ email, password }, dispatch) => {
                 localStorage.setItem('token', res.data.token);
                 dispatch(loginSuccess(res.data.data));
                 successNotification(res.data.message);
+                setTimeout(() => {
+                    window.location = pathname;
+                }, 3000);
             }
         })
         .catch((err) => {
@@ -34,7 +37,7 @@ export const signUp = ({ userName, email, password }) => {
         })
 }
 
-export const googleAuth = (result, dispatch) => {
+export const googleAuth = (result, dispatch, pathname) => {
     dispatch(loginStart())
     httpCommon.post('/auth/google', {
         userName: result.user.displayName,
@@ -44,7 +47,10 @@ export const googleAuth = (result, dispatch) => {
         if (res.status === 200) {
             localStorage.setItem('token', res.data.token);
             dispatch(loginSuccess(res.data.data));
-            successNotification(res.data.message)
+            successNotification(res.data.message);
+            setTimeout(() => {
+                window.location = pathname;
+            }, 3000);
         }
     }).catch((err) => {
         errorNotification(err.response.data.message);

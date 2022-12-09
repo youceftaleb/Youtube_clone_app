@@ -191,7 +191,7 @@ const VideoDetailPage = () => {
                 {currentVideo?.desc}
               </Typography>
             </Stack>
-            <Comments videoId={currentVideo._id} />
+            <Comments videoId={currentVideo?._id} />
           </Box>
         </Box>
         <Box

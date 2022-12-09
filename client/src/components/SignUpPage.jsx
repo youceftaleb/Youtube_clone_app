@@ -14,21 +14,23 @@ import { auth, provider } from "../services/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { googleAuth, signUp } from "../services/auth";
 import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 export const SignUpPage = () => {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(registerSchema) });
   const onSubmit = (data) => {
-    const { email, password,userName } = data;
+    const { email, password, userName } = data;
     signUp({ email, password, userName });
   };
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
-      .then((result) => googleAuth(result, dispatch))
+      .then((result) => googleAuth(result, dispatch, pathname))
       .catch((err) => console.log(err));
   };
   return (

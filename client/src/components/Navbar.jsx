@@ -1,4 +1,4 @@
-import { Button, Stack, Box, Modal, Typography } from "@mui/material";
+import { Button, Stack, Box, Modal } from "@mui/material";
 import { Link } from "react-router-dom";
 import { SearchBar } from "./SearchBar";
 import { logo } from "../utils/constants";
@@ -11,6 +11,10 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { useSelector } from "react-redux";
 import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
 import { AVATAR } from "./";
+import { LogoutOutlined } from "@mui/icons-material";
+import { logout } from "../redux/reducers/userSlice";
+import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -25,6 +29,8 @@ const style = {
 };
 
 export const Navbar = () => {
+  const { pathname } = useLocation();
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -60,7 +66,19 @@ export const Navbar = () => {
           >
             <VideoCallOutlinedIcon sx={{ color: "white", cursor: "pointer" }} />
             <AVATAR user={currentUser} />
-            <Typography>{currentUser?.userName}</Typography>
+            <Button
+              sx={{ color: "white" }}
+              onClick={() => {
+                dispatch(logout());
+                localStorage.removeItem("token");
+                window.location = pathname;
+              }}
+            >
+              <LogoutOutlined
+                x={{ p: "10px", color: "white", cursor: "pointer" }}
+              />
+              logout
+            </Button>
           </div>
         ) : (
           <Button onClick={handleOpen} sx={{ color: "white" }}>

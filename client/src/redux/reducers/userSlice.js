@@ -22,7 +22,9 @@ export const userSlice = createSlice({
             state.error = true;
         },
         logout: (state) => {
-            state = initialState;
+            state.currentUser = null;
+            state.loading = false;
+            state.error = false;
         },
         subscribe: (state, { payload }) => {
             if (state.currentUser.subscriptions.includes(payload)) {
