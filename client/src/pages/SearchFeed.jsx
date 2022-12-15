@@ -12,26 +12,23 @@ const SearchFeed = () => {
       .then((res) => res.json())
       .then((res) => {
         if (res.data) {
-          setVideos([
+          const newArr = [
             ...res.data[0],
             ...res.data[1],
             ...res.data[2],
             ...res.data[3],
-          ]);
-          console.log([
-            ...res.data[0],
-            ...res.data[1],
-            ...res.data[2],
-            ...res.data[3],
-          ]);
-          console.log([
-            ...new Set([
-              ...res.data[0],
-              ...res.data[1],
-              ...res.data[2],
-              ...res.data[3],
-            ]),
-          ]);
+          ];
+          const result = newArr.reduce((final, current) => {
+            let obj = final.find((item) => item._id === current._id);
+            if (obj) {
+              return final;
+            } else {
+              return final.concat([current]);
+            }
+          }, []);
+          // console.table(newArr);
+          // console.log(result);
+          setVideos(result);
         } else {
           setVideos([]);
         }

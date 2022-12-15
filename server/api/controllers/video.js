@@ -1,10 +1,14 @@
 const Video = require('../models/Video')
 const User = require('../models/User')
+// const cloudinary = require('../utils/cloudinary')
+
 exports.AddVideo = async (req, res) => {
     try {
         const { title, videoUrl } = req.body;
         // ! form validation server side
-        if (!(title && videoUrl)) return res.status(400).send({ message: "title and video are required" });
+        if (!(title && videoUrl)) return res.status(400).send({ message: "title is required" });
+        // console.log(req.file);
+        // const result = await cloudinary.uploader.upload(req.file.path)
 
         const newVideo = new Video({ userId: req.user.user_id, ...req.body })
         const savedVideo = await newVideo.save()

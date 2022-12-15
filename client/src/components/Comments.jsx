@@ -4,6 +4,7 @@ import { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import httpCommon from "../utils/http-common";
+import propTypes from "prop-types";
 import {
   errorNotification,
   successNotification,
@@ -14,7 +15,7 @@ import {
   fetchComments,
 } from "../redux/reducers/videoSlice";
 
-export const Comments = ({ videoId }) => {
+export const Comments = ({ videoId = "" }) => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const { comments } = useSelector((state) => state.video);
@@ -64,4 +65,8 @@ export const Comments = ({ videoId }) => {
       ))}
     </Stack>
   );
+};
+
+Comments.propTypes = {
+  selectedBtn: propTypes.string.isRequired,
 };

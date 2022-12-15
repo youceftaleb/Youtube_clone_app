@@ -7,6 +7,7 @@ import httpCommon from "../utils/http-common";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
+import propTypes from "prop-types";
 import {
   darkNotification,
   errorNotification,
@@ -28,6 +29,7 @@ const style = {
 };
 
 export const Comment = ({ comment = null }) => {
+  console.log(typeof comment);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -109,4 +111,8 @@ export const Comment = ({ comment = null }) => {
       </Modal>
     </>
   );
+};
+
+Comment.propTypes = {
+  comment: propTypes.object.isRequired,
 };

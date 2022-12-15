@@ -13,11 +13,9 @@ import { useDispatch } from "react-redux";
 import GoogleIcon from "@mui/icons-material/Google";
 import { auth, provider } from "../services/firebase";
 import { signInWithPopup } from "firebase/auth";
-import { useLocation } from "react-router-dom";
 
 export const SignInPage = () => {
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
   const {
     register,
     handleSubmit,
@@ -25,12 +23,12 @@ export const SignInPage = () => {
   } = useForm({ resolver: yupResolver(loginSchema) });
   const onSubmit = (data) => {
     const { email, password } = data;
-    login({ email, password }, dispatch, pathname);
+    login({ email, password }, dispatch);
   };
 
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
-      .then((result) => googleAuth(result, dispatch, pathname))
+      .then((result) => googleAuth(result, dispatch))
       .catch((err) => console.log(err));
   };
 

@@ -14,11 +14,9 @@ import { auth, provider } from "../services/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { googleAuth, signUp } from "../services/auth";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
 
 export const SignUpPage = () => {
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
   const {
     register,
     handleSubmit,
@@ -30,7 +28,7 @@ export const SignUpPage = () => {
   };
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
-      .then((result) => googleAuth(result, dispatch, pathname))
+      .then((result) => googleAuth(result, dispatch))
       .catch((err) => console.log(err));
   };
   return (

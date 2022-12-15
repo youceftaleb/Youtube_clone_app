@@ -35,9 +35,10 @@ const videoSchema = new mongoose.Schema({
         type: [String],
         // todo: add a default category
         default: ["New"]
-
+    },
+    cloudinary_id: {
+        type: String
     }
-
 }, { timestamps: true });
 
 const Video = mongoose.model('videos', videoSchema);

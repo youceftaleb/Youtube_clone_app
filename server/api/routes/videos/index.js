@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const VideoController = require('../../controllers/video')
 const checkLogin = require('../../middlewares/checkLogin')
+// const upload = require('../../middlewares/upload')
 
 module.exports = () => {
     // create

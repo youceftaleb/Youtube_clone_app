@@ -1,9 +1,17 @@
 import { Box, CardContent, CardMedia, Typography } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import propTypes from "prop-types";
 
-export const ChannelCard = ({ ChannelDetail, marginTop }) => {
-  console.log(ChannelDetail);
+export const ChannelCard = ({
+  ChannelDetail = {
+    _id: "",
+    profilePic: "http://dergipark.org.tr/assets/app/images/buddy_sample.png",
+    userName: "S",
+    subNumber: null,
+  },
+  marginTop = "",
+}) => {
   return (
     <Box
       sx={{
@@ -52,4 +60,9 @@ export const ChannelCard = ({ ChannelDetail, marginTop }) => {
       </Link>
     </Box>
   );
+};
+
+ChannelCard.propTypes = {
+  ChannelDetail: propTypes.object,
+  marginTop: propTypes.string,
 };
