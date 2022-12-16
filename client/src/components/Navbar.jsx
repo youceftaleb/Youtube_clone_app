@@ -6,15 +6,16 @@ import LoginIcon from "@mui/icons-material/Login";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
-import { AVATAR } from "./";
+import { AddVideoModal, AVATAR } from "./";
 import { LogoutOutlined } from "@mui/icons-material";
-import { logout } from "../redux/reducers/userSlice";
+import { logout } from "../redux/reducers/userReducer";
 import { useDispatch } from "react-redux";
 import { LoginModal } from "./";
 
 export const Navbar = () => {
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
+  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const [openAddVideoModal, setOpenAddVideoModal] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   return (
     <>
@@ -44,7 +45,10 @@ export const Navbar = () => {
               color: "white",
             }}
           >
-            <VideoCallOutlinedIcon sx={{ color: "white", cursor: "pointer" }} />
+            <VideoCallOutlinedIcon
+              onClick={() => setOpenAddVideoModal(true)}
+              sx={{ color: "white", cursor: "pointer" }}
+            />
             <AVATAR user={currentUser} />
             <Button
               sx={{ color: "white" }}
@@ -61,13 +65,17 @@ export const Navbar = () => {
             </Button>
           </div>
         ) : (
-          <Button onClick={() => setOpen(true)} sx={{ color: "white" }}>
+          <Button
+            onClick={() => setOpenLoginModal(true)}
+            sx={{ color: "white" }}
+          >
             Login
             <LoginIcon sx={{ p: "10px", color: "white", cursor: "pointer" }} />
           </Button>
         )}
       </Stack>
-      <LoginModal open={open} setOpen={setOpen} />
+      <LoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
+      <AddVideoModal open={openAddVideoModal} setOpen={setOpenAddVideoModal} />
     </>
   );
 };

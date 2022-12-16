@@ -7,7 +7,7 @@ import { Videos } from "../components/Videos";
 import { format } from "timeago.js";
 import { useDispatch, useSelector } from "react-redux";
 import httpCommon from "../utils/http-common";
-import { fetchSuccess, Like, Dislike } from "../redux/reducers/videoSlice";
+import { fetchSuccess, Like, Dislike } from "../redux/reducers/videoReducer";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
@@ -22,7 +22,7 @@ import {
   sub,
   unsub,
 } from "../services/like.sub";
-import { subscribe } from "../redux/reducers/userSlice";
+import { subscribe } from "../redux/reducers/userReducer";
 import { Comments } from "../components";
 import { errorNotification } from "../helpers/notifications";
 
@@ -82,17 +82,37 @@ const VideoDetailPage = () => {
       errorNotification("please login to perform this action");
     }
   };
-// console.log(currentUser)
+  // console.log(currentUser)
   return (
     <Box minHeight="95vh">
       <Stack direction={{ xs: "column", md: "row" }}>
         <Box flex={1}>
           <Box sx={{ width: "100%", position: "sticky", top: "86px" }}>
-            <ReactPlayer
-              className="react-player"
-              url={"https://www.youtube.com/watch?v=LXb3EKWsInQ"}
-              controls
-            />
+            <Box
+              sx={{
+                position: "relative",
+                overflow: "hidden",
+                width: "100%",
+                paddingTop: "56.25%",
+              }}
+            >
+              <iframe
+                src={currentVideo?.videoUrl}
+                frameBorder="0"
+                allowFullScreen={true}
+                height="500"
+                width="1200"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  bottom: 0,
+                  right: 0,
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
+            </Box>
             <Typography color="#fff" variant="h5" fontWeight="bold" p={2}>
               {currentVideo?.title}
             </Typography>

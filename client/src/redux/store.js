@@ -1,6 +1,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
-import userReducer from './reducers/userSlice'
-import videoReducer from './reducers/videoSlice'
+import userReducer from './reducers/userReducer'
+import videoReducer from './reducers/videoReducer'
+import appReducer from './reducers/appReducer'
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
@@ -9,7 +10,7 @@ const persistConfig = {
     storage
 }
 
-const reducers = combineReducers({ user: userReducer, video: videoReducer })
+const reducers = combineReducers({ user: userReducer, video: videoReducer, app: appReducer })
 
 const persistedReducer = persistReducer(persistConfig, reducers)
 

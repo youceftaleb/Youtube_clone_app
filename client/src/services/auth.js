@@ -1,6 +1,6 @@
 import httpCommon from "../utils/http-common";
 import { successNotification, errorNotification, infoNotification, darkNotification } from '../helpers/notifications'
-import { loginStart, loginSuccess, loginError } from "../redux/reducers/userSlice";
+import { loginStart, loginSuccess, loginError } from "../redux/reducers/userReducer";
 
 export const login = ({ email, password }, dispatch) => {
     dispatch(loginStart())

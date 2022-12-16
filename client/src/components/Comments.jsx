@@ -13,7 +13,7 @@ import {
   addComment,
   deleteComments,
   fetchComments,
-} from "../redux/reducers/videoSlice";
+} from "../redux/reducers/videoReducer";
 
 export const Comments = ({ videoId = "" }) => {
   const dispatch = useDispatch();
