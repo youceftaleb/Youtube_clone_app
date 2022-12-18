@@ -32,7 +32,7 @@ export const SearchBar = () => {
         onChange={(e) => setSearchKey(e.target.value)}
         style={{ color: "black" }}
       />
-      <IconButton type="submit" sx={{ p: "10px", color: "red" }}>
+      <IconButton type="submit" sx={{ p: "10px", color: "#42a5f5" }}>
         <Search />
       </IconButton>
     </Paper>

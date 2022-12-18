@@ -18,6 +18,7 @@ import {
 export const Comments = ({ videoId = "" }) => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
+  const { dark_mode } = useSelector((state) => state.app);
   const { comments } = useSelector((state) => state.video);
   const [value, setValue] = useState("");
   useEffect(() => {
@@ -41,7 +42,7 @@ export const Comments = ({ videoId = "" }) => {
     setValue("");
   };
   return (
-    <Stack sx={{ color: "#fff" }} py={5} px={5} gap={5}>
+    <Stack sx={{ color: dark_mode ? "#fff" : "black" }} py={5} px={5} gap={5}>
       <Typography>{comments?.length} Comments</Typography>
       {currentUser ? (
         <Stack direction="row" gap={2}>
@@ -50,7 +51,7 @@ export const Comments = ({ videoId = "" }) => {
             <TextField
               fullWidth
               placeholder="Add a comment..."
-              sx={{ input: { color: "white" } }}
+              sx={{ input: { color: dark_mode ? "#fff" : "black" } }}
               variant="standard"
               onChange={(e) => setValue(e.target.value)}
               value={value}

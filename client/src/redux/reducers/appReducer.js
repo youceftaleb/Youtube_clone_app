@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const appSlice = createSlice({
-    name: 'user',
+    name: 'app',
     initialState: {
         dark_mode: true
-
     },
     reducers: {
         toggleDarkMode: (state) => {

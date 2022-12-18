@@ -15,6 +15,7 @@ export const Comment = ({ comment = null }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const { currentUser } = useSelector((state) => state.user);
+  const { dark_mode } = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const [channel, setChannel] = useState(null);
   useEffect(() => {
@@ -37,7 +38,7 @@ export const Comment = ({ comment = null }) => {
       <Stack direction="row">
         <AVATAR user={channel} />
         <Box px={2}>
-          <Stack color="#fff" direction="row">
+          <Stack color={dark_mode ? "#fff" : "black"} direction="row">
             <Typography sx={{ fontSize: "14px", sm: "subtitle2", md: "h6" }}>
               {channel?.userName}
             </Typography>
@@ -47,7 +48,7 @@ export const Comment = ({ comment = null }) => {
           </Stack>
           <Typography
             sx={{ sm: "subtitle2", md: "body2", opacity: 0.7 }}
-            color="#fff"
+            color={dark_mode ? "#fff" : "black"}
           >
             {comment?.text}
           </Typography>

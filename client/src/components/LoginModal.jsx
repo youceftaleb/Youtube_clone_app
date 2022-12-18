@@ -6,6 +6,7 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LoginIcon from "@mui/icons-material/Login";
 import propTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -13,7 +14,6 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  backgroundColor: "#000",
   boxShadow: 24,
   p: 4,
   color: "white",
@@ -23,6 +23,7 @@ export const LoginModal = ({
   open = false,
   setOpen = () => location.reload(),
 }) => {
+  const { dark_mode } = useSelector((state) => state.app);
   const [value, setValue] = useState(0);
   const [login, setLogin] = useState(true);
   return (
@@ -33,10 +34,10 @@ export const LoginModal = ({
       aria-describedby="modal-modal-description"
     >
       <>
-        <Box sx={style}>
+        <Box sx={{ ...style, backgroundColor: dark_mode ? "black" : "white" }}>
           {login ? <SignInPage /> : <SignUpPage />}
           <BottomNavigation
-            sx={{ bgcolor: "black" }}
+            sx={{ bgcolor: dark_mode ? "black" : "white" }}
             showLabels
             value={value}
             onChange={(event, newValue) => {
@@ -44,13 +45,13 @@ export const LoginModal = ({
             }}
           >
             <BottomNavigationAction
-              sx={{ color: "white" }}
+              sx={{ color: dark_mode ? "white" : "black" }}
               label="Sign in"
               onClick={() => setLogin(true)}
               icon={<LoginIcon />}
             />
             <BottomNavigationAction
-              sx={{ color: "white" }}
+              sx={{ color: dark_mode ? "white" : "black" }}
               label="Sign up"
               onClick={() => setLogin(false)}
               icon={<LockOpenIcon />}

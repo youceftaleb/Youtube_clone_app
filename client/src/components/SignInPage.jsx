@@ -9,13 +9,14 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../helpers/validation";
 import { googleAuth, login } from "../services/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import GoogleIcon from "@mui/icons-material/Google";
 import { auth, provider } from "../services/firebase";
 import { signInWithPopup } from "firebase/auth";
 
 export const SignInPage = () => {
   const dispatch = useDispatch();
+  const { dark_mode } = useSelector((state) => state.app);
   const {
     register,
     handleSubmit,
@@ -42,10 +43,20 @@ export const SignInPage = () => {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "primary.main", color: "#000" }}>
+        <Avatar
+          sx={{
+            m: 1,
+            bgcolor: "primary.main",
+            color: dark_mode ? "black" : "white",
+          }}
+        >
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5" sx={{ color: "white" }}>
+        <Typography
+          component="h1"
+          variant="h5"
+          sx={{ color: dark_mode ? "white" : "black" }}
+        >
           Sign in
         </Typography>
         <form
@@ -62,7 +73,10 @@ export const SignInPage = () => {
             name="email"
             autoComplete="email"
             focused
-            sx={{ input: { color: "white" }, color: "primary.main" }}
+            sx={{
+              input: { color: dark_mode ? "white" : "black" },
+              color: "primary.main",
+            }}
             {...register("email")}
             error={!!errors?.email}
             helperText={errors?.email ? errors.email.message : null}
@@ -78,7 +92,10 @@ export const SignInPage = () => {
             id="password"
             autoComplete="current-password"
             focused
-            sx={{ input: { color: "white" }, color: "primary.main" }}
+            sx={{
+              input: { color: dark_mode ? "white" : "black" },
+              color: "primary.main",
+            }}
             {...register("password")}
             error={!!errors?.password}
             helperText={errors?.password ? errors.password.message : null}

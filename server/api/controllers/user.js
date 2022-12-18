@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const Video = require('../models/Video')
 
 exports.updateUser = async (req, res) => {
     try {
@@ -20,6 +21,7 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
     try {
         if (req.params.id === req.user.user_id) {
+            await Video.deleteMany({ userId: req.user.user_id });
             await User.findByIdAndDelete(req.params.id);
             res.status(200).json({ message: "User deleted successfully" });
         } else {

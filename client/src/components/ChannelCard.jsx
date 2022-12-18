@@ -2,6 +2,7 @@ import { Box, CardContent, CardMedia, Typography } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import propTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 export const ChannelCard = ({
   ChannelDetail = {
@@ -12,6 +13,7 @@ export const ChannelCard = ({
   },
   marginTop = "",
 }) => {
+  const { dark_mode } = useSelector((state) => state.app);
   return (
     <Box
       sx={{
@@ -33,7 +35,7 @@ export const ChannelCard = ({
             flexDirection: "column",
             justifyContent: "center",
             textAlign: "center",
-            color: "#fff",
+            color: dark_mode ? "#fff" : "black",
           }}
         >
           <CardMedia
@@ -49,7 +51,9 @@ export const ChannelCard = ({
           />
           <Typography variant="h6">
             {ChannelDetail?.userName}
-            <CheckCircle sx={{ fontSize: 12, color: "gray", ml: "5px" }} />
+            {ChannelDetail.subNumber > 1000 ? (
+              <CheckCircle sx={{ fontSize: 12, color: "gray", ml: "5px" }} />
+            ) : null}
           </Typography>
           {ChannelDetail?.subNumber && (
             <Typography>

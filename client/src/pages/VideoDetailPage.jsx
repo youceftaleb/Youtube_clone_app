@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import ReactPlayer from "react-player";
 import { Typography, Box, Stack, Divider, Button } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
 import { Videos } from "../components/Videos";
@@ -29,10 +28,20 @@ import { errorNotification } from "../helpers/notifications";
 const VideoDetailPage = () => {
   const { currentUser } = useSelector((state) => state.user);
   const { currentVideo } = useSelector((state) => state.video);
+  const { dark_mode } = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const { id } = useParams();
   const [videos, setVideos] = useState(null);
   const [channel, setChannel] = useState(null);
+
+  // const useMountEffect = (fun) => useEffect(fun, []);
+  // useMountEffect(() => {
+  //   httpCommon
+  //     .put(`/videos/view/${currentVideo?._id}`)
+  //     .then((res) => console.log("view added"))
+  //     .catch((err) => console.log(err));
+  // });
+
   useEffect(() => {
     httpCommon
       .get(`/videos/${id}`)
@@ -82,7 +91,6 @@ const VideoDetailPage = () => {
       errorNotification("please login to perform this action");
     }
   };
-  // console.log(currentUser)
   return (
     <Box minHeight="95vh">
       <Stack direction={{ xs: "column", md: "row" }}>
@@ -97,11 +105,11 @@ const VideoDetailPage = () => {
               }}
             >
               <iframe
-                src={currentVideo?.videoUrl}
+                src={currentVideo?.videoUrl || ""}
                 frameBorder="0"
                 allowFullScreen={true}
-                height="500"
-                width="1200"
+                height="77vh"
+                width="100%"
                 style={{
                   position: "absolute",
                   top: 0,
@@ -113,13 +121,18 @@ const VideoDetailPage = () => {
                 }}
               />
             </Box>
-            <Typography color="#fff" variant="h5" fontWeight="bold" p={2}>
+            <Typography
+              color={dark_mode ? "#fff" : "black"}
+              variant="h5"
+              fontWeight="bold"
+              p={2}
+            >
               {currentVideo?.title}
             </Typography>
             <Stack
               direction="row"
               justifyContent="space-between"
-              sx={{ color: "#fff" }}
+              sx={{ color: dark_mode ? "#fff" : "black" }}
               py={1}
               px={2}
             >
@@ -162,26 +175,25 @@ const VideoDetailPage = () => {
               </Stack>
             </Stack>
             <Divider variant="middle" sx={{ bgcolor: "#757575" }} />
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              sx={{ color: "#fff" }}
-              py={1}
-              px={2}
-            >
+            <Stack direction="row" justifyContent="space-between" py={1} px={2}>
               <Link to={`/channel/${currentVideo?.userId}`}>
                 <Stack direction="row">
                   <AVATAR user={channel} />
                   <Box px={1}>
-                    <Typography sx={{ sm: "subtitle1", md: "h6" }} color="#fff">
+                    <Typography
+                      sx={{ sm: "subtitle1", md: "h6" }}
+                      color={dark_mode ? "#fff" : "black"}
+                    >
                       {channel?.userName}
-                      <CheckCircle
-                        sx={{ fontSize: "12px", color: "grey", ml: "5px" }}
-                      />
+                      {channel?.subNumber > 1000 ? (
+                        <CheckCircle
+                          sx={{ fontSize: "12px", color: "grey", ml: "5px" }}
+                        />
+                      ) : null}
                     </Typography>
                     <Typography
                       sx={{ sm: "subtitle2", md: "body2" }}
-                      color="#fff"
+                      color={dark_mode ? "#fff" : "black"}
                     >
                       {channel?.subNumber} Subscribers
                     </Typography>
@@ -207,7 +219,10 @@ const VideoDetailPage = () => {
             </Stack>
             <Divider variant="middle" sx={{ bgcolor: "#757575" }} />
             <Stack py={1} px={2}>
-              <Typography variant="body1" sx={{ opacity: 0.7, color: "#fff" }}>
+              <Typography
+                variant="body1"
+                sx={{ opacity: 0.7, color: dark_mode ? "#fff" : "black" }}
+              >
                 {currentVideo?.desc}
               </Typography>
             </Stack>

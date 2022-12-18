@@ -1,5 +1,5 @@
 import { Modal, Box, TextField } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   errorNotification,
   successNotification,
@@ -14,11 +14,8 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  backgroundColor: "#000",
   boxShadow: 24,
   p: 4,
-  color: "white",
-  border: "1px solid white",
 };
 
 export const ModifyCommentModal = ({
@@ -28,6 +25,7 @@ export const ModifyCommentModal = ({
   value = "",
   setValue = () => null,
 }) => {
+  const { dark_mode } = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const handleEditComment = (e) => {
     e.preventDefault();
@@ -45,13 +43,18 @@ export const ModifyCommentModal = ({
   };
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
-      <Box sx={style}>
+      <Box
+        sx={{
+          ...style,
+          backgroundColor: dark_mode ? "#fff" : "black",
+        }}
+      >
         <form onSubmit={handleEditComment} style={{ width: "100%" }}>
           <TextField
             fullWidth
             focused
             variant="outlined"
-            sx={{ input: { color: "white" } }}
+            sx={{ input: { color: dark_mode ? "black" : "white" } }}
             label="Edit your comment"
             value={value}
             onChange={(e) => setValue(e.target.value)}

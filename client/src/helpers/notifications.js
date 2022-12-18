@@ -1,4 +1,4 @@
-import { toast } from "react-toastify";
+import { toast } from "material-react-toastify"
 
 const opts = {
     position: "top-center",

@@ -13,10 +13,11 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { auth, provider } from "../services/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { googleAuth, signUp } from "../services/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export const SignUpPage = () => {
   const dispatch = useDispatch();
+  const { dark_mode } = useSelector((state) => state.app);
   const {
     register,
     handleSubmit,
@@ -41,10 +42,20 @@ export const SignUpPage = () => {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "primary.main", color: "#000" }}>
+        <Avatar
+          sx={{
+            m: 1,
+            bgcolor: "primary.main",
+            color: dark_mode ? "black" : "white",
+          }}
+        >
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography
+          sx={{ color: dark_mode ? "white" : "black" }}
+          component="h1"
+          variant="h5"
+        >
           Sign up
         </Typography>
         <Box
@@ -64,7 +75,7 @@ export const SignUpPage = () => {
                 label="User Name"
                 focused
                 color="primary"
-                sx={{ input: { color: "white" } }}
+                sx={{ input: { color: dark_mode ? "white" : "black" } }}
                 {...register("userName")}
                 error={!!errors?.userName}
                 helperText={errors?.userName ? errors.userName.message : null}
@@ -81,7 +92,7 @@ export const SignUpPage = () => {
                 autoComplete="email"
                 focused
                 color="primary"
-                sx={{ input: { color: "white" } }}
+                sx={{ input: { color: dark_mode ? "white" : "black" } }}
                 {...register("email")}
                 error={!!errors?.email}
                 helperText={errors?.email ? errors.email.message : null}
@@ -98,7 +109,7 @@ export const SignUpPage = () => {
                 autoComplete="new-password"
                 focused
                 color="primary"
-                sx={{ input: { color: "white" } }}
+                sx={{ input: { color: dark_mode ? "white" : "black" } }}
                 {...register("password")}
                 error={!!errors?.password}
                 helperText={errors?.password ? errors.password.message : null}

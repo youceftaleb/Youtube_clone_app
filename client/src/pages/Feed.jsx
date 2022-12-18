@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { Sidebar, Videos } from "../components";
+import { useSelector } from "react-redux";
 
 const Feed = () => {
+  const { dark_mode } = useSelector((state) => state.app);
   const [selectedBtn, setSelectedBtn] = useState("New");
   const [videos, setVideos] = useState([]);
 
@@ -36,9 +38,9 @@ const Feed = () => {
           variant="h4"
           fontWeight="bold"
           mb={2}
-          sx={{ color: "white" }}
+          sx={{ color: dark_mode ? "white" : "black" }}
         >
-          {selectedBtn} <span style={{ color: "#fc1503" }}>videos</span>
+          {selectedBtn} <span style={{ color: "#42a5f5" }}>videos</span>
         </Typography>
         <Videos videos={videos} />
       </Box>

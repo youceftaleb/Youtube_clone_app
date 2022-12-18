@@ -1,22 +1,25 @@
-import { Button, Stack } from "@mui/material";
+import { Button, Stack,Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import { SearchBar } from "./SearchBar";
 import { logo } from "../utils/constants";
 import LoginIcon from "@mui/icons-material/Login";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
 import { AddVideoModal, AVATAR } from "./";
 import { LogoutOutlined } from "@mui/icons-material";
 import { logout } from "../redux/reducers/userReducer";
-import { useDispatch } from "react-redux";
 import { LoginModal } from "./";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import { toggleDarkMode } from "../redux/reducers/appReducer";
 
 export const Navbar = () => {
   const dispatch = useDispatch();
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openAddVideoModal, setOpenAddVideoModal] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
+  const { dark_mode } = useSelector((state) => state.app);
   return (
     <>
       <Stack
@@ -26,15 +29,29 @@ export const Navbar = () => {
         p={2}
         sx={{
           position: "sticky",
-          background: "#000",
+          background: dark_mode ? "rgb(15,15,15)" : "#fff",
           top: 0,
           justifyContent: "space-between",
         }}
       >
-        <Link to="/" style={{ display: "flex", alignItems: "center" }}>
-          <img src={logo} alt="logo" height={45} />
-        </Link>
+        <Box>
+          <Link to="/" style={{ display: "flex", alignItems: "center" }}>
+            <img src={logo} alt="logo" height={45} />
+          </Link>
+          {dark_mode ? (
+            <LightModeIcon
+              sx={{ color: dark_mode ? "white" : "black", cursor: "pointer" }}
+              onClick={() => dispatch(toggleDarkMode())}
+            />
+          ) : (
+            <DarkModeIcon
+              sx={{ color: dark_mode ? "white" : "black", cursor: "pointer" }}
+              onClick={() => dispatch(toggleDarkMode())}
+            />
+          )}
+        </Box>
         <SearchBar />
+
         {currentUser ? (
           <div
             style={{
@@ -47,11 +64,11 @@ export const Navbar = () => {
           >
             <VideoCallOutlinedIcon
               onClick={() => setOpenAddVideoModal(true)}
-              sx={{ color: "white", cursor: "pointer" }}
+              sx={{ color: dark_mode ? "white" : "black", cursor: "pointer" }}
             />
             <AVATAR user={currentUser} />
             <Button
-              sx={{ color: "white" }}
+              sx={{ color: dark_mode ? "white" : "black" }}
               onClick={() => {
                 dispatch(logout());
                 localStorage.removeItem("token");
@@ -59,7 +76,11 @@ export const Navbar = () => {
               }}
             >
               <LogoutOutlined
-                sx={{ p: "10px", color: "white", cursor: "pointer" }}
+                sx={{
+                  p: "10px",
+                  color: dark_mode ? "white" : "black",
+                  cursor: "pointer",
+                }}
               />
               logout
             </Button>
@@ -67,10 +88,16 @@ export const Navbar = () => {
         ) : (
           <Button
             onClick={() => setOpenLoginModal(true)}
-            sx={{ color: "white" }}
+            sx={{ color: dark_mode ? "white" : "black" }}
           >
             Login
-            <LoginIcon sx={{ p: "10px", color: "white", cursor: "pointer" }} />
+            <LoginIcon
+              sx={{
+                p: "10px",
+                color: dark_mode ? "white" : "black",
+                cursor: "pointer",
+              }}
+            />
           </Button>
         )}
       </Stack>

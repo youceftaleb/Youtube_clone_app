@@ -23,8 +23,8 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import httpCommon from "../utils/http-common";
 import { newVideoUpload } from "../services/videoUpload";
+import { useSelector } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -32,11 +32,9 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  backgroundColor: "#000",
   boxShadow: 24,
   p: 4,
   color: "white",
-  border: "1px solid white",
 };
 
 const InputStyle = {
@@ -52,6 +50,7 @@ const InputStyle = {
 };
 
 export const AddVideoModal = ({ open, setOpen }) => {
+  const { dark_mode } = useSelector((state) => state.app);
   const [thumbnail, setThumbnail] = useState(null);
   const [video, setVideo] = useState(null);
   const [thumbnailLoading, setThumbnailLoading] = useState(0);
@@ -115,7 +114,13 @@ export const AddVideoModal = ({ open, setOpen }) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <Box
+        sx={{
+          ...style,
+          backgroundColor: dark_mode ? "#0f0f0f" : "white",
+          border: `1px solid ${dark_mode ? "white" : "black"}`,
+        }}
+      >
         <Container component="main" maxWidth="xs">
           <Box
             sx={{
@@ -125,7 +130,11 @@ export const AddVideoModal = ({ open, setOpen }) => {
               alignItems: "center",
             }}
           >
-            <Typography component="h1" variant="h5" sx={{ color: "white" }}>
+            <Typography
+              component="h1"
+              variant="h5"
+              sx={{ color: dark_mode ? "white" : "black" }}
+            >
               Create a new video
             </Typography>
             <form
@@ -142,7 +151,7 @@ export const AddVideoModal = ({ open, setOpen }) => {
                 name="title"
                 autoComplete="title"
                 focused
-                sx={{ input: { color: "white" }, color: "primary.main" }}
+                sx={{ input: { color: dark_mode ? "white" : "black" } }}
                 {...register("title")}
                 error={!!errors?.title}
                 helperText={errors?.title ? errors.title.message : null}
@@ -158,7 +167,7 @@ export const AddVideoModal = ({ open, setOpen }) => {
                 autoComplete="description"
                 focused
                 placeholder="add a video description here"
-                sx={{ input: { color: "white" } }}
+                sx={{ input: { color: dark_mode ? "white" : "black" } }}
                 {...register("desc")}
                 error={!!errors?.desc}
                 helperText={errors?.desc ? errors.desc.message : null}
@@ -230,7 +239,7 @@ export const AddVideoModal = ({ open, setOpen }) => {
                 autoComplete="categories"
                 focused
                 placeholder="seperate tags with a comma"
-                sx={{ input: { color: "white" }, color: "primary.main" }}
+                sx={{ input: { color: dark_mode ? "white" : "black" } }}
                 {...register("category")}
                 error={!!errors?.category}
                 helperText={errors?.category ? errors.category.message : null}
@@ -239,7 +248,7 @@ export const AddVideoModal = ({ open, setOpen }) => {
                 type="submit"
                 fullWidth
                 variant="outlined"
-                sx={{ mt: 3, mb: 2, color: "primary.main" }}
+                sx={{ mt: 3, mb: 2 }}
               >
                 Add
               </Button>

@@ -13,7 +13,7 @@ const App = () => {
     <BrowserRouter>
       <Box
         sx={{
-          backgroundColor: dark_mode ? "#000" : "#fff",
+          backgroundColor: dark_mode ? "#0f0f0f" : "#fff",
           minHeight: "100vh",
         }}
       >
