@@ -7,40 +7,19 @@ import {
   Button,
   CircularProgress,
 } from "@mui/material";
-import app from "../services/firebase";
 import propTypes from "prop-types";
-import CloudDoneIcon from "@mui/icons-material/CloudDone";
-import { v4 as uuidv4 } from "uuid";
-import AddImage from "@mui/icons-material/AddPhotoAlternate";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { videoSchema } from "../helpers/validation";
-import AddVideo from "@mui/icons-material/VideoCall";
 import { useEffect, useState } from "react";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
-import { newVideoUpload } from "../services/videoUpload";
+import { newVideoUpload, upload } from "../services/fileStorage";
 import { useSelector } from "react-redux";
+import { VideoCall, AddPhotoAlternate, CloudDone } from "@mui/icons-material";
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  boxShadow: 24,
-  p: 4,
-  color: "white",
-};
-
-const InputStyle = {
   color: "white",
   height: 60,
-  width: 250,
+  width: 300,
   bgcolor: "#42a5f5",
   margin: "auto",
   display: "flex",
@@ -50,13 +29,13 @@ const InputStyle = {
 };
 
 export const AddVideoModal = ({ open, setOpen }) => {
-  const { dark_mode } = useSelector((state) => state.app);
-  const [thumbnail, setThumbnail] = useState(null);
   const [video, setVideo] = useState(null);
-  const [thumbnailLoading, setThumbnailLoading] = useState(0);
+  const [thumbnail, setThumbnail] = useState(null);
   const [videoLoading, setVideoLoading] = useState(0);
+  const [thumbnailLoading, setThumbnailLoading] = useState(0);
   const [videoUploadSuccess, setVideoUploadSuccess] = useState("");
   const [thumbnailUploadSuccess, setThumbnailUploadSuccess] = useState("");
+  const { dark_mode } = useSelector((state) => state.app);
   const {
     register,
     handleSubmit,
@@ -67,61 +46,36 @@ export const AddVideoModal = ({ open, setOpen }) => {
     newVideoUpload(
       title,
       desc,
-      category,
+      category.split(" "),
       thumbnailUploadSuccess,
       videoUploadSuccess
     );
   };
-  const upload = (file, urlType) => {
-    const storage = getStorage(app);
-    const storageRef = ref(storage, uuidv4() + "-" + file.name);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-
-    // Listen for state changes, errors, and completion of the upload.
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        urlType === "thumbnailUrl"
-          ? setThumbnailLoading(Math.round(progress))
-          : setVideoLoading(Math.round(progress));
-      },
-      (error) => {},
-      () => {
-        // Upload completed successfully, now we can get the download URL
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          urlType === "thumbnailUrl"
-            ? setThumbnailUploadSuccess(downloadURL)
-            : setVideoUploadSuccess(downloadURL);
-        });
-      }
-    );
-  };
 
   useEffect(() => {
-    video ? upload(video, "videoUrl") : null;
+    video ? upload(video, setVideoLoading, setVideoUploadSuccess) : null;
   }, [video]);
   useEffect(() => {
-    thumbnail ? upload(thumbnail, "thumbnailUrl") : null;
+    thumbnail
+      ? upload(thumbnail, setThumbnailLoading, setThumbnailUploadSuccess)
+      : null;
   }, [thumbnail]);
 
   return (
-    <Modal
-      open={open}
-      onClose={() => setOpen(false)}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
+    <Modal open={open} onClose={() => setOpen(false)}>
       <Box
         sx={{
-          ...style,
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 400,
+          boxShadow: 24,
+          p: 4,
           backgroundColor: dark_mode ? "#0f0f0f" : "white",
-          border: `1px solid ${dark_mode ? "white" : "black"}`,
         }}
       >
-        <Container component="main" maxWidth="xs">
+        <Container component="div" maxWidth="xs">
           <Box
             sx={{
               marginTop: 8,
@@ -145,11 +99,9 @@ export const AddVideoModal = ({ open, setOpen }) => {
               <TextField
                 margin="normal"
                 required
-                fullWidth
                 id="title"
                 label="Video title"
                 name="title"
-                autoComplete="title"
                 focused
                 sx={{ input: { color: dark_mode ? "white" : "black" } }}
                 {...register("title")}
@@ -158,15 +110,11 @@ export const AddVideoModal = ({ open, setOpen }) => {
               />
 
               <TextField
-                rows={2}
                 margin="normal"
-                fullWidth
                 id="description"
                 label="Video description"
                 name="desc"
-                autoComplete="description"
                 focused
-                placeholder="add a video description here"
                 sx={{ input: { color: dark_mode ? "white" : "black" } }}
                 {...register("desc")}
                 error={!!errors?.desc}
@@ -180,9 +128,9 @@ export const AddVideoModal = ({ open, setOpen }) => {
                     <Typography
                       component="label"
                       htmlFor="thumbnail"
-                      sx={InputStyle}
+                      sx={style}
                     >
-                      <AddImage sx={{ color: "white" }} />
+                      <AddPhotoAlternate sx={{ color: "white" }} />
                       &nbsp; Choose a photo
                     </Typography>
                     <input
@@ -196,8 +144,8 @@ export const AddVideoModal = ({ open, setOpen }) => {
                   </>
                 )
               ) : (
-                <Typography>
-                  <CloudDoneIcon />
+                <Typography sx={{ color: dark_mode ? "white" : "black" }}>
+                  <CloudDone />
                   &nbsp; uploaded successfully
                 </Typography>
               )}
@@ -206,12 +154,8 @@ export const AddVideoModal = ({ open, setOpen }) => {
                   <CircularProgress value={videoLoading} />
                 ) : (
                   <>
-                    <Typography
-                      component="label"
-                      htmlFor="video"
-                      sx={InputStyle}
-                    >
-                      <AddVideo />
+                    <Typography component="label" htmlFor="video" sx={style}>
+                      <VideoCall />
                       &nbsp; Add a video
                     </Typography>
                     <input
@@ -224,32 +168,25 @@ export const AddVideoModal = ({ open, setOpen }) => {
                   </>
                 )
               ) : (
-                <Typography>
-                  <CloudDoneIcon />
+                <Typography sx={{ color: dark_mode ? "white" : "black" }}>
+                  <CloudDone />
                   &nbsp; uploaded successfully
                 </Typography>
               )}
 
               <TextField
                 margin="normal"
-                fullWidth
                 id="cat"
                 label="Categories"
                 name="cat"
-                autoComplete="categories"
                 focused
-                placeholder="seperate tags with a comma"
+                placeholder="seperate tags with a single space"
                 sx={{ input: { color: dark_mode ? "white" : "black" } }}
                 {...register("category")}
                 error={!!errors?.category}
                 helperText={errors?.category ? errors.category.message : null}
               />
-              <Button
-                type="submit"
-                fullWidth
-                variant="outlined"
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <Button type="submit" variant="outlined" sx={{ mt: 3, mb: 2 }}>
                 Add
               </Button>
             </form>

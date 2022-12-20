@@ -17,8 +17,6 @@ export const ChannelCard = ({
   return (
     <Box
       sx={{
-        boxShadow: "none",
-        borderRadius: "20px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -46,7 +44,7 @@ export const ChannelCard = ({
               height: "180px",
               width: "180px",
               mb: 2,
-              border: "1px solid #e3e3e3",
+              border: `1px solid ${dark_mode ? "white" : "#e3e3e3"}`,
             }}
           />
           <Typography variant="h6">

@@ -1,29 +1,20 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Typography, Box, Stack, Divider, Button } from "@mui/material";
-import { CheckCircle } from "@mui/icons-material";
-import { Videos } from "../components/Videos";
+import { Videos, AVATAR, Comments } from "../components";
 import { format } from "timeago.js";
 import { useDispatch, useSelector } from "react-redux";
 import httpCommon from "../utils/http-common";
-import { fetchSuccess, Like, Dislike } from "../redux/reducers/videoReducer";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
-import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
-import ReplyIcon from "@mui/icons-material/Reply";
-import { AVATAR } from "../components";
+import { fetchSuccess } from "../redux/reducers/videoReducer";
 import {
-  like,
-  dislike,
-  removeLike,
-  removeDislike,
-  sub,
-  unsub,
-} from "../services/like.sub";
-import { subscribe } from "../redux/reducers/userReducer";
-import { Comments } from "../components";
-import { errorNotification } from "../helpers/notifications";
+  Reply,
+  ThumbDownOutlined,
+  ThumbDown,
+  ThumbUpOutlined,
+  ThumbUp,
+  CheckCircle,
+} from "@mui/icons-material";
+import { likeDislikeService, subscribeService } from "../services/like.sub";
 
 const VideoDetailPage = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -34,13 +25,8 @@ const VideoDetailPage = () => {
   const [videos, setVideos] = useState(null);
   const [channel, setChannel] = useState(null);
 
-  // const useMountEffect = (fun) => useEffect(fun, []);
-  // useMountEffect(() => {
-  //   httpCommon
-  //     .put(`/videos/view/${currentVideo?._id}`)
-  //     .then((res) => console.log("view added"))
-  //     .catch((err) => console.log(err));
-  // });
+  // !======================================================================V
+  //todo=================================================================>view
 
   useEffect(() => {
     httpCommon
@@ -61,35 +47,11 @@ const VideoDetailPage = () => {
       .catch((err) => console.log(err));
   }, [id, dispatch]);
 
-  const handleLike = () => {
-    if (currentUser) {
-      currentVideo.likes.includes(currentUser._id)
-        ? removeLike(currentVideo._id)
-        : like(currentVideo._id);
-      dispatch(Like(currentUser._id));
-    } else {
-      errorNotification("please login to perform this action");
-    }
-  };
-  const handleDislike = () => {
-    if (currentUser) {
-      currentVideo.dislikes.includes(currentUser._id)
-        ? removeDislike(currentVideo._id)
-        : dislike(currentVideo._id);
-      dispatch(Dislike(currentUser._id));
-    } else {
-      errorNotification("please login to perform this action");
-    }
+  const LikeDislike = (opType) => {
+    likeDislikeService(currentUser, currentVideo, dispatch, opType);
   };
   const handleSubscribe = () => {
-    if (currentUser) {
-      currentUser.subscriptions?.includes(channel._id)
-        ? (unsub(channel._id), (channel.subNumber -= 1))
-        : (sub(channel._id), (channel.subNumber += 1));
-      dispatch(subscribe(channel?._id));
-    } else {
-      errorNotification("please login to perform this action");
-    }
+    subscribeService(currentUser, channel, dispatch);
   };
   return (
     <Box minHeight="95vh">
@@ -143,34 +105,34 @@ const VideoDetailPage = () => {
               <Stack direction="row" gap="20px">
                 <Typography variant="body1">
                   {currentVideo?.likes?.includes(currentUser?._id) ? (
-                    <ThumbUpIcon
+                    <ThumbUp
                       sx={{ cursor: "pointer" }}
-                      onClick={handleLike}
+                      onClick={() => LikeDislike("like")}
                     />
                   ) : (
-                    <ThumbUpOutlinedIcon
+                    <ThumbUpOutlined
                       sx={{ cursor: "pointer" }}
-                      onClick={handleLike}
+                      onClick={() => LikeDislike("like")}
                     />
                   )}{" "}
                   {currentVideo?.likes?.length}
                 </Typography>
                 <Typography variant="body1">
                   {currentVideo?.dislikes?.includes(currentUser?._id) ? (
-                    <ThumbDownIcon
+                    <ThumbDown
                       sx={{ cursor: "pointer" }}
-                      onClick={handleDislike}
+                      onClick={() => LikeDislike("dislike")}
                     />
                   ) : (
-                    <ThumbDownOutlinedIcon
+                    <ThumbDownOutlined
                       sx={{ cursor: "pointer" }}
-                      onClick={handleDislike}
+                      onClick={() => LikeDislike("dislike")}
                     />
                   )}{" "}
                   {currentVideo?.dislikes?.length}
                 </Typography>
                 <Typography variant="body1">
-                  <ReplyIcon sx={{ cursor: "pointer" }} /> Share
+                  <Reply sx={{ cursor: "pointer" }} /> Share
                 </Typography>
               </Stack>
             </Stack>

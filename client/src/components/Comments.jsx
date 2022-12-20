@@ -1,19 +1,11 @@
 import { Stack, TextField, Typography } from "@mui/material";
 import { AVATAR, Comment } from "./";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
 import httpCommon from "../utils/http-common";
 import propTypes from "prop-types";
-import {
-  errorNotification,
-  successNotification,
-} from "../helpers/notifications";
-import {
-  addComment,
-  deleteComments,
-  fetchComments,
-} from "../redux/reducers/videoReducer";
+import { deleteComments, fetchComments } from "../redux/reducers/videoReducer";
+import { addCommentServer } from "../services/comments";
 
 export const Comments = ({ videoId = "" }) => {
   const dispatch = useDispatch();
@@ -29,16 +21,7 @@ export const Comments = ({ videoId = "" }) => {
   }, [videoId]);
   const handlesubmit = (e) => {
     e.preventDefault();
-    if (!value) return errorNotification("comment is empty");
-    httpCommon
-      .post(`/comments/${videoId}`, { text: value })
-      .then((res) => {
-        if (res.status === 200) {
-          dispatch(addComment(res.data.data));
-          successNotification(res.data.message);
-        }
-      })
-      .catch((err) => errorNotification(err.response.data.message));
+    addCommentServer(dispatch, videoId, value);
     setValue("");
   };
   return (
@@ -69,5 +52,5 @@ export const Comments = ({ videoId = "" }) => {
 };
 
 Comments.propTypes = {
-  selectedBtn: propTypes.string.isRequired,
+  videoId: propTypes.string.isRequired,
 };

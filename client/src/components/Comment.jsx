@@ -1,19 +1,15 @@
 import { Stack, Box, Typography } from "@mui/material";
 import { AVATAR, ModifyCommentModal } from "./";
 import { format } from "timeago.js";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import httpCommon from "../utils/http-common";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import propTypes from "prop-types";
-import { darkNotification, errorNotification } from "../helpers/notifications";
-import { deleteOneComment } from "../redux/reducers/videoReducer";
+import { deleteCommentServer } from "../services/comments";
+import { Delete, Edit } from "@mui/icons-material";
 
 export const Comment = ({ comment = null }) => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
   const { currentUser } = useSelector((state) => state.user);
   const { dark_mode } = useSelector((state) => state.app);
   const dispatch = useDispatch();
@@ -23,15 +19,6 @@ export const Comment = ({ comment = null }) => {
       .get(`/users/${comment.userId}`)
       .then((res) => setChannel(res.data.data));
   }, [comment.userId]);
-  const handleDeleteComment = () => {
-    httpCommon
-      .delete(`/comments/${comment._id}`)
-      .then((res) => {
-        dispatch(deleteOneComment(comment._id));
-        darkNotification(res.data.message);
-      })
-      .catch((err) => errorNotification(err.response.data.message));
-  };
 
   return (
     <>
@@ -55,13 +42,15 @@ export const Comment = ({ comment = null }) => {
         </Box>
         {currentUser?._id === channel?._id ? (
           <>
-            <EditIcon
+            <Edit
+              className="action-icon"
               onClick={() => setOpen(true)}
-              sx={{ cursor: "pointer" }}
+              sx={{ cursor: "pointer", opacity: 0.3 }}
             />
-            <DeleteIcon
-              onClick={handleDeleteComment}
-              sx={{ cursor: "pointer" }}
+            <Delete
+              className="action-icon"
+              onClick={() => deleteCommentServer(dispatch, comment._id)}
+              sx={{ cursor: "pointer", opacity: 0.3 }}
             />
           </>
         ) : null}
@@ -70,8 +59,6 @@ export const Comment = ({ comment = null }) => {
         commentId={comment?._id}
         open={open}
         setOpen={setOpen}
-        value={value}
-        setValue={setValue}
       />
     </>
   );

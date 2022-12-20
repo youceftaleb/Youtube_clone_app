@@ -1,15 +1,16 @@
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import {
+  Avatar,
+  Button,
+  TextField,
+  Grid,
+  Box,
+  Typography,
+  Container,
+} from "@mui/material";
+import { LockOutlined, Google } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../helpers/validation";
-import GoogleIcon from "@mui/icons-material/Google";
 import { auth, provider } from "../services/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { googleAuth, signUp } from "../services/auth";
@@ -49,7 +50,7 @@ export const SignUpPage = () => {
             color: dark_mode ? "black" : "white",
           }}
         >
-          <LockOutlinedIcon />
+          <LockOutlined />
         </Avatar>
         <Typography
           sx={{ color: dark_mode ? "white" : "black" }}
@@ -130,7 +131,7 @@ export const SignUpPage = () => {
           onClick={signInWithGoogle}
           fullWidth
           variant="outlined"
-          endIcon={<GoogleIcon />}
+          endIcon={<Google />}
         >
           sign in with Google
         </Button>

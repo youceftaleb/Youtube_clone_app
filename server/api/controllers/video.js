@@ -1,6 +1,6 @@
 const Video = require('../models/Video')
 const User = require('../models/User')
-// const cloudinary = require('../utils/cloudinary')
+const Comment = require('../models/Comment')
 
 exports.AddVideo = async (req, res) => {
     try {
@@ -38,7 +38,8 @@ exports.DeleteVideo = async (req, res) => {
         const video = await Video.findById(req.params.id)
         if (!video) return res.status(404).send({ message: "Video not found" })
         if (req.user.user_id === video.userId) {
-            const deleteVideo = await Video.findByIdAndDelete(req.params.id)
+            await Comment.deleteMany({ videoId: req.params.id })
+            await Video.findByIdAndDelete(req.params.id)
             res.status(200).send({ message: 'Video deleted' })
         } else {
             res.status(403).send({ message: 'you are not allowed to delete this video' })
