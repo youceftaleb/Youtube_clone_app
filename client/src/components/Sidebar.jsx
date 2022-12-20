@@ -1,15 +1,13 @@
 import { Stack } from "@mui/material";
-import { categories } from "../utils/constants";
+import { categories } from "../utils/categories";
 import propTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const style = {
-  textTransform: "capitalize",
   display: "flex",
   alignItems: "center",
   justifyContent: "start",
   cursor: "pointer",
-  outline: "none",
   border: "none",
   padding: "7px 15px",
   margin: "10px 0px",
@@ -18,11 +16,10 @@ const style = {
 };
 
 export const Sidebar = ({
-  selectedBtn = "New",
+  selectedBtn = "Home",
   setSelectedBtn = () => null,
 }) => {
   const { dark_mode } = useSelector((state) => state.app);
-  const dispatch = useDispatch();
   return (
     <Stack
       direction="row"

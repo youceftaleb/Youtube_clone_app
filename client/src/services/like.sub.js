@@ -40,3 +40,7 @@ export const likeDislikeService = (currentUser, currentVideo, dispatch, LikeOrDi
         errorNotification("please login to perform this action");
     }
 }
+
+export const Addview = (id) => {
+    httpCommon.put(`/videos/view/${id}`).then(res => { }).catch(err => console.log(err.response.data.message))
+}

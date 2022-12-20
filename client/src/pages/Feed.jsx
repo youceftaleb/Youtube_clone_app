@@ -2,25 +2,62 @@ import { useState, useEffect } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { Sidebar, Videos } from "../components";
 import { useSelector } from "react-redux";
+import httpCommon from "../utils/http-common";
+import { errorNotification } from "../helpers/notifications";
 
 const Feed = () => {
   const { dark_mode } = useSelector((state) => state.app);
-  const [selectedBtn, setSelectedBtn] = useState("New");
+  const { currentUser } = useSelector((state) => state.user);
+  const [selectedBtn, setSelectedBtn] = useState("Home");
   const [videos, setVideos] = useState([]);
-
   useEffect(() => {
-    fetch(`http://localhost:9001/api/videos/category?category=${selectedBtn}`)
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.data) {
-          setVideos(res.data);
-        } else {
-          setVideos([]);
-        }
-      })
-      .catch((err) => {
-        console.log(`fetching category error: ${err.message}`);
-      });
+    if (selectedBtn === "Home") {
+      httpCommon
+        .get("/videos/random")
+        .then((res) => {
+          if (res.data.data) {
+            setVideos(res.data.data);
+          } else {
+            setVideos([]);
+          }
+        })
+        .catch((err) => console.log(`fetching category error: ${err.message}`));
+    } else if (selectedBtn === "Trending") {
+      httpCommon
+        .get("/videos/trend")
+        .then((res) => {
+          if (res.data.data) {
+            setVideos(res.data.data);
+          } else {
+            setVideos([]);
+          }
+        })
+        .catch((err) => console.log(`fetching category error: ${err.message}`));
+    } else if (selectedBtn === "Subscriptions") {
+      if (currentUser) {
+        httpCommon.get("/videos/subs").then((res) => {
+          if (res.data.data) {
+            setVideos(res.data.data);
+          } else {
+            setVideos([]);
+          }
+        });
+      } else {
+        errorNotification("you are not logged in");
+        setVideos([]);
+      }
+    } else {
+      httpCommon
+        .get(`/videos/category?category=${selectedBtn}`)
+        .then((res) => {
+          if (res.data.data) {
+            setVideos(res.data.data);
+          } else {
+            setVideos([]);
+          }
+        })
+        .catch((err) => console.log(`fetching category error: ${err.message}`));
+    }
   }, [selectedBtn]);
   return (
     <Stack sx={{ flexDirection: { sx: "column", md: "row" } }}>

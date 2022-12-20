@@ -1,0 +1,41 @@
+import {
+    Home, HomeOutlined, Whatshot, WhatshotOutlined,
+    Subscriptions,
+    SubscriptionsOutlined,
+    MusicNote,
+    MusicNoteOutlined,
+    School,
+    SchoolOutlined,
+    GraphicEq,
+    OndemandVideo,
+    SportsEsports,
+    SportsEsportsOutlined,
+    FitnessCenter,
+    Checkroom,
+    ShoppingCart,
+    ShoppingCartOutlined,
+    FaceRetouchingNatural,
+    FaceRetouchingNaturalOutlined,
+    LocalAirport,
+    TheaterComedy,
+    TheaterComedyOutlined,
+} from '@mui/icons-material';
+
+
+
+export const categories = [
+    { name: 'Home', icon: Home, outlined_icon: HomeOutlined },
+    { name: 'Trending', icon: Whatshot, outlined_icon: WhatshotOutlined },
+    { name: 'Subscriptions', icon: Subscriptions, outlined_icon: SubscriptionsOutlined },
+    { name: 'Music', icon: MusicNote, outlined_icon: MusicNoteOutlined },
+    { name: 'Education', icon: School, outlined_icon: SchoolOutlined },
+    { name: 'Podcast', icon: GraphicEq, outlined_icon: GraphicEq },
+    { name: 'Movie', icon: OndemandVideo, outlined_icon: OndemandVideo },
+    { name: 'Gaming', icon: SportsEsports, outlined_icon: SportsEsportsOutlined },
+    { name: 'Sport', icon: FitnessCenter, outlined_icon: FitnessCenter },
+    { name: 'Fashion', icon: Checkroom, outlined_icon: Checkroom },
+    { name: 'Shopping', icon: ShoppingCart, outlined_icon: ShoppingCartOutlined },
+    { name: 'Beauty', icon: FaceRetouchingNatural, outlined_icon: FaceRetouchingNaturalOutlined },
+    { name: 'Travel', icon: LocalAirport, outlined_icon: LocalAirport },
+    { name: 'Comedy', icon: TheaterComedy, outlined_icon: TheaterComedyOutlined },
+];

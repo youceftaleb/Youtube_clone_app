@@ -15,6 +15,7 @@ import http from "../utils/http-common";
 import { useSelector } from "react-redux";
 import { Edit, Delete } from "@mui/icons-material";
 import { deleteVideo } from "../services/fileStorage";
+import { Addview } from "../services/like.sub";
 
 export const VideoCard = ({ video }) => {
   const [channel, setChannel] = useState(null);
@@ -39,7 +40,7 @@ export const VideoCard = ({ video }) => {
             background: "transparent",
           }}
         >
-          <Link to={`/video/${video._id}`}>
+          <Link onClick={() => Addview(video._id)} to={`/video/${video._id}`}>
             <CardMedia
               image={video?.thumbnailUrl}
               alt={video?.title}
@@ -51,7 +52,7 @@ export const VideoCard = ({ video }) => {
             />
           </Link>
           <CardContent sx={{ backgroundColor: "transparent", height: "80px" }}>
-            <Link to={`/video/${video._id}`}>
+            <Link onClick={() => Addview(video._id)} to={`/video/${video._id}`}>
               <Typography
                 variant="subtitle1"
                 fontWeight="bold"
