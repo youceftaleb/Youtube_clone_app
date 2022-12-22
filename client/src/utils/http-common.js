@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "http://localhost:9001/api",
+  baseURL: "https://youtube-clone-api-production-a52b.up.railway.app/api",
   headers: { 'token': localStorage.getItem('token') }
 });

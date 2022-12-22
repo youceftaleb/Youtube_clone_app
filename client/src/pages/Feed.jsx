@@ -11,6 +11,7 @@ const Feed = () => {
   const [selectedBtn, setSelectedBtn] = useState("Home");
   const [videos, setVideos] = useState([]);
   useEffect(() => {
+    setVideos([]);
     if (selectedBtn === "Home") {
       httpCommon
         .get("/videos/random")
