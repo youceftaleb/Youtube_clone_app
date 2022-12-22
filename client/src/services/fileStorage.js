@@ -27,7 +27,7 @@ const deleteFile = (fileUrl) => {
         const desertRef = ref(storage, fileUrl);
         // Delete the file
         deleteObject(desertRef).then(() => { }).catch((error) => {
-            errorNotification('there has been an error')
+            console.log('there has been an error')
             console.log(error)
         });
     } catch (error) {
@@ -47,7 +47,6 @@ export const deleteVideo = (video) => {
 
 export const modifyProfilePic = (user, newPicUrl) => {
     deleteFile(user?.profilePic.split("/").at(-1).split("?")[0]);
-    console.log('hi boy')
     httpCommon.put(`/users/${user._id}`, { profilePic: newPicUrl })
         .then(res => {
             successNotification('updated successfully')

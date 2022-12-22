@@ -13,7 +13,7 @@ import { format } from "timeago.js";
 import { useEffect, useState } from "react";
 import http from "../utils/http-common";
 import { useSelector } from "react-redux";
-import { Edit, Delete } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 import { deleteVideo } from "../services/fileStorage";
 import { Addview } from "../services/like.sub";
 
@@ -79,25 +79,15 @@ export const VideoCard = ({ video }) => {
               </Typography>
             </Link>
             {currentUser?._id === channel?._id ? (
-              <>
-                <Edit
-                  className="action-icon"
-                  sx={{
-                    cursor: "pointer",
-                    color: dark_mode ? "white" : "black",
-                    opacity: 0.3,
-                  }}
-                />
-                <Delete
-                  onClick={handleDeleteVideo}
-                  className="action-icon"
-                  sx={{
-                    cursor: "pointer",
-                    color: dark_mode ? "white" : "black",
-                    opacity: 0.3,
-                  }}
-                />
-              </>
+              <Delete
+                onClick={handleDeleteVideo}
+                className="action-icon"
+                sx={{
+                  cursor: "pointer",
+                  color: dark_mode ? "white" : "black",
+                  opacity: 0.3,
+                }}
+              />
             ) : null}
           </CardContent>
         </Card>

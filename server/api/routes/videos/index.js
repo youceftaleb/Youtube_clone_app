@@ -6,8 +6,6 @@ const checkLogin = require('../../middlewares/checkLogin')
 module.exports = () => {
     // create
     router.post('/videos', checkLogin, VideoController.AddVideo)
-    // update
-    router.put('/videos/:id', checkLogin, VideoController.UpdateVideo)
     //delete
     router.delete('/videos/:id', checkLogin, VideoController.DeleteVideo)
     // subscriptions videos
@@ -34,6 +32,6 @@ module.exports = () => {
     router.put('/videos/rlike/:videoId', checkLogin, VideoController.removeLike)
     // remove a dislike
     router.put('/videos/rdislike/:videoId', checkLogin, VideoController.removeDislike)
-
+    
     return router;
 }

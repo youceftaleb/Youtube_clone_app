@@ -14,25 +14,6 @@ exports.AddVideo = async (req, res) => {
         res.status(err.status || 500).send({ message: err.message || "Something went wrong" })
     }
 }
-exports.UpdateVideo = async (req, res) => {
-    try {
-        const video = await Video.findById(req.params.id)
-        if (!video) return res.status(404).send({ message: "Video not found" })
-        if (req.user.user_id === video.userId) {
-            const UpdatedVideo = await Video.findByIdAndUpdate(req.params.id, {
-                $set: req.body
-            }, {
-                new: true,
-                useFindAndModify: false,
-            })
-            res.status(200).send({ message: 'Video updated', data: UpdatedVideo })
-        } else {
-            res.status(403).send({ message: 'you are not allowed to edit this video' })
-        }
-    } catch (err) {
-        res.status(err.status || 500).send({ message: err.message || "Something went wrong" })
-    }
-}
 exports.DeleteVideo = async (req, res) => {
     try {
         const video = await Video.findById(req.params.id)

@@ -1,11 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Box } from "@mui/material";
 import { Navbar } from "./components";
-import Feed from "./pages/Feed";
-import ChannelDetailPage from "./pages/ChannelDetailPage";
-import VideoDetailPage from "./pages/VideoDetailPage";
-import SearchFeed from "./pages/SearchFeed";
 import { useSelector } from "react-redux";
+import { Feed, SearchFeed, VideoDetailPage, ChannelDetailPage } from "./pages";
 
 const App = () => {
   const { dark_mode } = useSelector((state) => state.app);
