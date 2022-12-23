@@ -35,7 +35,7 @@ export const VideoCard = ({ video }) => {
       {video && channel ? (
         <Card
           sx={{
-            width: { xs: "100%", md: "300px" },
+            width: { xs: "90vw", md: "300px" },
             boxShadow: "none",
             borderRadius: 0,
             background: "transparent",
@@ -46,8 +46,8 @@ export const VideoCard = ({ video }) => {
               image={video?.thumbnailUrl}
               alt={video?.title}
               sx={{
-                width: { xs: "100%", md: "300px" },
-                height: 180,
+                width: { xs: "90vw", md: "300px" },
+                height: { xs: "250px", sm: "300px", md: "180px" },
                 borderRadius: 5,
               }}
             />

@@ -15,6 +15,7 @@ import {
   CheckCircle,
 } from "@mui/icons-material";
 import { likeDislikeService, subscribeService } from "../services/like.sub";
+import { formatter } from "../helpers/numberFormater";
 
 const VideoDetailPage = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -25,8 +26,6 @@ const VideoDetailPage = () => {
   const [videos, setVideos] = useState(null);
   const [channel, setChannel] = useState(null);
 
-  // !======================================================================V
-  //todo=================================================================>view
 
   useEffect(() => {
     httpCommon
@@ -157,7 +156,7 @@ const VideoDetailPage = () => {
                       sx={{ sm: "subtitle2", md: "body2" }}
                       color={dark_mode ? "#fff" : "black"}
                     >
-                      {channel?.subNumber} Subscribers
+                      {formatter.format(channel?.subNumber)} Subscribers
                     </Typography>
                   </Box>
                 </Stack>

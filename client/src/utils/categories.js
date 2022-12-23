@@ -33,7 +33,7 @@ export const categories = [
     { name: 'Gaming', icon: SportsEsports, outlined_icon: SportsEsportsOutlined },
     { name: 'Sports', icon: SportsVolleyball, outlined_icon: SportsVolleyballOutlined },
     { name: 'Nature', icon: Forest, outlined_icon: ForestOutlined },
-    { name: 'Computer science', icon: Terminal, outlined_icon: Terminal },
+    { name: 'IT', icon: Terminal, outlined_icon: Terminal },
     { name: 'Travel', icon: LocalAirport, outlined_icon: LocalAirport },
     { name: 'Comedy', icon: TheaterComedy, outlined_icon: TheaterComedyOutlined },
     { name: 'Kids', icon: ChildCare, outlined_icon: ChildCare }
