@@ -16,7 +16,6 @@ export const ModifyUserNameModal = ({
     e.preventDefault();
     modifyUserName(dispatch, userId, value, setOpen);
     setValue("");
-    location.reload();
   };
   return (
     <Modal open={open} onClose={() => setOpen(false)}>

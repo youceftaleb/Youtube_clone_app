@@ -1,10 +1,11 @@
 import { errorNotification, successNotification } from "../helpers/notifications";
 import { logout, setUser } from "../redux/reducers/userReducer";
 import httpCommon from "../utils/http-common";
+import { deleteFile } from "./fileStorage";
 
 export const modifyUserName = (dispatch, userId, value, setOpen) => {
     if (!value) {
-        errorNotification("please edit your comment before submitting");
+        errorNotification("please edit your userName before submitting");
     } else {
         httpCommon
             .put(`/users/${userId}`, { userName: value })
@@ -14,12 +15,14 @@ export const modifyUserName = (dispatch, userId, value, setOpen) => {
                 setOpen(false);
             })
             .catch((err) => errorNotification(err.response.data.message));
+        location.reload();
     }
 }
 
-export const deleteUser = (dispatch, id) => {
+export const deleteUser = (dispatch, user) => {
+    deleteFile(user.profilePic.split("/").at(-1).split("?")[0])
     httpCommon
-        .delete(`/users/${id}`)
+        .delete(`/users/${user.id}`)
         .then((res) => {
             successNotification("Account deleted succefully");
             dispatch(logout());

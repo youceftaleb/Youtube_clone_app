@@ -60,7 +60,7 @@ const ChannelDetailPage = () => {
               {currentUser?._id === channel?._id ? (
                 <Box sx={{ mb: 3 }}>
                   <Fab
-                    onClick={() => deleteUser(dispatch, channel?._id)}
+                    onClick={() => deleteUser(dispatch, channel)}
                     sx={{ mr: 2 }}
                     color="error"
                     variant="extended"

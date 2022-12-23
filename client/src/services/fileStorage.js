@@ -20,7 +20,7 @@ export const newVideoUpload = (title, desc, category, thumbnailUrl, videoUrl) =>
 }
 
 
-const deleteFile = (fileUrl) => {
+export const deleteFile = (fileUrl) => {
     try {
         const storage = getStorage(app);
         // Create a reference to the file to delete
