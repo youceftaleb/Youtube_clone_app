@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { Delete } from "@mui/icons-material";
 import { deleteVideo } from "../services/fileStorage";
 import { Addview } from "../services/like.sub";
+import { formatter } from "../helpers/numberFormater";
 
 export const VideoCard = ({ video }) => {
   const [channel, setChannel] = useState(null);
@@ -64,7 +65,8 @@ export const VideoCard = ({ video }) => {
                 sx={{ fontSize: 12, opacity: 0.7 }}
                 color={dark_mode ? "white" : "black"}
               >
-                {video?.views} views • {format(video?.createdAt)}
+                {formatter.format(video?.views)} views •{" "}
+                {format(video?.createdAt)}
               </Typography>
             </Link>
             {/* // !channel card */}

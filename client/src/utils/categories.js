@@ -17,7 +17,8 @@ import {
     PsychologyOutlined,
     SportsVolleyball,
     SportsVolleyballOutlined,
-    SportsEsportsOutlined
+    SportsEsportsOutlined,
+    ChildCare
 } from '@mui/icons-material';
 
 
@@ -35,4 +36,5 @@ export const categories = [
     { name: 'Computer science', icon: Terminal, outlined_icon: Terminal },
     { name: 'Travel', icon: LocalAirport, outlined_icon: LocalAirport },
     { name: 'Comedy', icon: TheaterComedy, outlined_icon: TheaterComedyOutlined },
+    { name: 'Kids', icon: ChildCare, outlined_icon: ChildCare }
 ];
