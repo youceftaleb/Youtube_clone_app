@@ -82,7 +82,7 @@ const ChannelDetailPage = () => {
           ) : null}
         </Box>
         <Box display="flex" p="2">
-          <Box sx={{ mr: { sm: "100px" } }} />
+          <Box sx={{ mr: { xs: "20px", sm: "30px" } }} />
           <Videos videos={videos} />
         </Box>
       </Box>
