@@ -146,7 +146,7 @@ const VideoDetailPage = () => {
                       color={dark_mode ? "#fff" : "black"}
                     >
                       {channel?.userName}
-                      {channel?.subNumber > 1000 ? (
+                      {channel?.subNumber >= 1000 ? (
                         <CheckCircle
                           sx={{ fontSize: "12px", color: "grey", ml: "5px" }}
                         />

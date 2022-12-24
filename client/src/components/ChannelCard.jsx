@@ -49,7 +49,7 @@ export const ChannelCard = ({
           />
           <Typography variant="h6">
             {ChannelDetail?.userName}
-            {ChannelDetail.subNumber > 1000 ? (
+            {ChannelDetail.subNumber >= 1000 ? (
               <CheckCircle sx={{ fontSize: 12, color: "gray", ml: "5px" }} />
             ) : null}
           </Typography>

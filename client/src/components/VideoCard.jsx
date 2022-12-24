@@ -73,7 +73,7 @@ export const VideoCard = ({ video }) => {
             <Link to={`/channel/${channel?._id}`}>
               <Typography variant="subtitle2" fontWeight="bold" color="gray">
                 {channel?.userName}
-                {channel?.subNumber > 1000 ? (
+                {channel?.subNumber >= 1000 ? (
                   <CheckCircle
                     sx={{ fontSize: 12, color: "gray", ml: "5px" }}
                   />
