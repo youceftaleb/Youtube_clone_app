@@ -26,7 +26,6 @@ const VideoDetailPage = () => {
   const [videos, setVideos] = useState(null);
   const [channel, setChannel] = useState(null);
 
-
   useEffect(() => {
     httpCommon
       .get(`/videos/${id}`)
